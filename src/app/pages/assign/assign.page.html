@@ -1,0 +1,144 @@
+<app-org-header title="Milk Install"></app-org-header>
+
+<ion-toolbar color="primary" class="top">
+  <app-select-button (objectSelected)="productSelected($event)" type="Product" [objects]="products"
+    [selectedObject]="selectedProduct" [info]=false>
+  </app-select-button>
+
+  <ion-segment color="dark" class="tab-selector ion-justify-content-center ion-align-items-center w-100">
+    <ion-row class="ion-justify-content-center w-100">
+      <ion-col size-xs="12" size-md="8" size-lg="6">
+        <ion-row class="w-100">
+          <ion-col *ngIf="nVats > 1" size="3">
+            <ion-segment-button mode="md" [value]="currentVatIndex - 1" (click)="goBack()" class="side-navigate-button">
+              <ion-icon name="chevron-back" color="secondary" class="ion-align-self-start"></ion-icon>
+            </ion-segment-button>
+          </ion-col>
+          <ion-col class="ion-justify-content-center ion-text-center">
+            <p class="ion-margin-top">Vat {{currentVatIndex + 1}}</p>
+          </ion-col>
+          <ion-col *ngIf="nVats > 1" size="3" size-xs="3" size-sm="3">
+            <ion-segment-button mode="md" [value]="currentVatIndex + 1" (click)="goForward()"
+              class="side-navigate-button">
+              <ion-icon name="chevron-forward" color="secondary" class="ion-align-self-end"></ion-icon>
+            </ion-segment-button>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+  </ion-segment>
+</ion-toolbar>
+
+<ion-content class="greyBackground">
+  <ion-refresher (ionRefresh)="doRefresh($event)" slot="fixed">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <ion-row class="ion-no-padding ion-justify-content-center">
+    <ion-col class="ion-no-padding" size-xs="12" size-md="8" size-lg="6">
+      <ion-row *ngIf="selectedProduct !== null && this.vat">
+        <ion-col size="7">
+          <ion-card>
+            <ion-card-content>
+              <ion-row class="ion-no-padding">
+                <ion-col class="ion-no-padding" size="auto">
+                  <ion-label>Vat Type: </ion-label>
+                </ion-col>
+                <ion-col class="ion-no-padding">
+                  <ion-select interface="popover" class="ion-no-padding" [value]="vat.formula" placeholder="empty"
+                    (ionChange)="vatTypeSelected($event)">
+                    <ion-select-option *ngFor="let option of options" [value]="option.value">{{option.text}}
+                    </ion-select-option>
+                  </ion-select>
+                </ion-col>
+                <ion-col size="1" class="ion-no-padding">
+                  <ion-icon name="chevron-down" color="secondary" class="ion-float-right icon"></ion-icon>
+                </ion-col>
+              </ion-row>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+        <ion-col size="5">
+          <ion-card>
+            <ion-card-content>
+              <ion-row class="ion-no-padding">
+                <ion-col class="ion-no-padding" size="auto">
+                  <ion-label>Vat Size: </ion-label>
+                </ion-col>
+                <ion-col class="ion-no-padding">
+                  <ion-select interface="popover" class="ion-no-padding" [value]="vat.sizeString" placeholder="empty"
+                    (ionChange)="vatSizeSelected($event)">
+                    <ion-select-option *ngFor="let size of optionSizes[vat.formula]" [value]="size.value">{{size.text}}
+                    </ion-select-option>
+                    <ion-select-option [value]="null">None</ion-select-option>
+                  </ion-select>
+                </ion-col>
+                <ion-col size="1" class="ion-no-padding">
+                  <ion-icon name="chevron-down" color="secondary" class="ion-float-right icon"></ion-icon>
+                </ion-col>
+              </ion-row>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-col>
+  </ion-row>
+
+
+  <!-- <ion-row *ngIf="selectedProduct !== null && this.vat">
+    <ion-col>
+      <ion-card button (click)="openVatOptions()">
+        <ion-card-content>
+          <ion-row>
+            <ion-col class="ion-no-padding" size="11">
+              <p>Vat Type: {{vat.formula}}, Vat Size: {{vat.sizeString}} gg</p>
+            </ion-col>
+            <ion-col size="1" class="ion-no-padding">
+              <ion-icon name="chevron-down" color="secondary" class="ion-float-right icon"></ion-icon>
+            </ion-col>
+          </ion-row>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+  </ion-row> -->
+
+
+  <app-select-button (objectSelected)="transceiverSelected($event)" type="Transceiver" [objects]="transceivers"
+    [selectedObject]="selectedTransceiver" [info]=true>
+  </app-select-button>
+
+  <app-sensors *ngIf="selectedTransceiver !== null" [sensors]="selectedTransceiver.sensors" [qrSensors]="qrSensors"
+    [transceiverId]="selectedTransceiver.serialNumber" [vat]="vat">
+  </app-sensors>
+
+  <ion-row class="ion-justify-content-center">
+    <ion-col size-xs="12" size-md="8" size-lg="6">
+      <ion-row>
+        <ion-col>
+          <p class="last-updated">
+            Pull screen down to refresh. Updated {{lastUpdated | dfnsFormat:'d MMM HH:mm:ss'}}
+          </p>
+        </ion-col>
+      </ion-row>
+    </ion-col>
+  </ion-row>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button [disabled]="selectedProduct === null || selectedTransceiver === null">
+      <ion-icon name="ellipsis-horizontal" color="secondary"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="top">
+      <ion-fab-button color="primary" (click)="openBar()">
+        <ion-icon name="qr-code-outline"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button color="primary" (click)="openManual()">
+        <ion-icon name="create-outline"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button color="primary" (click)="mergeSensors()">
+        <ion-icon name="git-pull-request-outline"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button color="primary" (click)="submit()">
+        <ion-icon name="checkmark"></ion-icon>
+      </ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
+</ion-content>

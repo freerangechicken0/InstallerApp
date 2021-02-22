@@ -1,0 +1,85 @@
+<!-- <ion-row class="ion-justify-content-center">
+  <ion-col size-xs="12" size-md="8" size-lg="8" size-xl="6">
+    <ng-container *ngIf="lidars.length > 1">
+      <p>Lidars</p>
+      <ion-row class="ion-align-items-left ion-text-center">
+        <ng-container *ngFor="let sensor of lidars">
+          <ion-col *ngIf="vat === null || sensor.vatId === vat.id || sensor.vatId === null" size-xs="6" size-md="6" size-lg="6"
+            size-xl="3">
+            <app-tile serialNumber={{sensor.serialNumber}}
+              (click)="showSensorSelect(sensor)"></app-tile>
+          </ion-col>
+        </ng-container>
+      </ion-row>
+    </ng-container>
+    <ng-container *ngIf="stirrers.length > 1">
+      <p>Stirrers</p>
+      <ion-row class="ion-align-items-left ion-text-center">
+        <ng-container *ngFor="let sensor of stirrers">
+          <ion-col *ngIf="vat === null || sensor.vatId === vat.id || sensor.vatId === null" size-xs="6" size-md="6" size-lg="6"
+            size-xl="3">
+            <app-tile serialNumber={{sensor.serialNumber}}
+              (click)="showSensorSelect(sensor)"></app-tile>
+          </ion-col>
+        </ng-container>
+      </ion-row>
+    </ng-container>
+    <ng-container *ngIf="temps.length > 2">
+      <p>Temperatures</p>
+      <ion-row class="ion-align-items-left ion-text-center">
+        <ng-container *ngFor="let sensor of temps">
+          <ion-col *ngIf="vat === null || sensor.vatId === vat.id || sensor.vatId === null" size-xs="6" size-md="6" size-lg="6"
+            size-xl="3">
+            <app-tile serialNumber={{sensor.serialNumber}}
+              (click)="showSensorSelect(sensor)"></app-tile>
+          </ion-col>
+        </ng-container>
+      </ion-row>
+    </ng-container>
+    <ng-container *ngIf="unknown.length > 1">
+      <p>Unknowns</p>
+      <ion-row class="ion-align-items-left ion-text-center">
+        <ng-container *ngFor="let sensor of unknown">
+          <ion-col *ngIf="vat === null || sensor.vatId === vat.id || sensor.vatId === null" size-xs="6" size-md="6" size-lg="6"
+            size-xl="3">
+            <app-tile serialNumber={{sensor.serialNumber}}
+              (click)="showSensorSelect(sensor)"></app-tile>
+          </ion-col>
+        </ng-container>
+      </ion-row>
+    </ng-container>
+    <ng-container>
+      
+    </ng-container>
+  </ion-col>
+</ion-row>
+<p>all</p> -->
+<ion-row class="ion-justify-content-center">
+  <ion-col size-xs="12" size-md="8" size-lg="6">
+    <ion-row>
+      <ion-col>
+        <h3>Sensors</h3>
+      </ion-col>
+    </ion-row>
+    <ion-row class="ion-align-items-left ion-text-center">
+      <ng-container *ngFor="let sensor of sensors">
+        <ion-col *ngIf="!vat || sensor.vatId === null || sensor.vatId === '' || sensor.vatId === vat.id" size-xs="6"
+          size-md="4" size-lg="3">
+          <app-tile [serialNumber]="sensor.serialNumber" [type]="sensor.type" (click)="showSensorSelect(sensor)">
+          </app-tile>
+        </ion-col>
+      </ng-container>
+      <ion-col *ngIf="qrSensors.length" class="ion-text-left" size="12">
+        <h4>Scanned Sensors</h4>
+      </ion-col>
+      <ng-container *ngFor="let sensor of qrSensors">
+        <ion-col *ngIf="sensor.vatId === null || sensor.vatId === '' || sensor.vatId === vat.id" size-xs="6" size-md="4"
+          size-lg="3">
+          <app-tile [serialNumber]="sensor.serialNumber" [type]="sensor.type" (click)="showSensorSelect(sensor)">
+          </app-tile>
+        </ion-col>
+      </ng-container>
+      <p *ngIf="!sensors.length && !qrSensors.length">This transceiver has no sensors</p>
+    </ion-row>
+  </ion-col>
+</ion-row>

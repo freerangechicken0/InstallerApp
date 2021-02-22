@@ -1,0 +1,20 @@
+.top {
+    height: 110px;
+    --min-height: 48px;
+    box-shadow: #00000026 0px 3px 4px;
+    ion-segment {
+        height: 48px;
+    }
+}
+
+ion-select::part(icon) {
+    display: none !important;
+}
+
+.icon {
+      padding-top: 4px;
+}
+
+ion-fab-button.fab-button-close-active {
+    --color:  #F5851F;
+}

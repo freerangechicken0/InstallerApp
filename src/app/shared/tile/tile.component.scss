@@ -1,0 +1,156 @@
+.tile-header {
+    font-size: 16px; 
+    margin-top: 7px; 
+    margin-bottom: 7px;
+}
+
+.milking-tile-value {
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.fuel {
+    .clickable-card {
+        border-top: 20px solid var(--ion-color-tertiary);
+    }
+}
+
+.tile-date {
+    margin-bottom: 10px;
+    font-size: 12px;
+}
+
+.tile-title {
+    margin-bottom: 5px;
+    font-size: 20px;
+}
+
+.no-value {
+    font-size: 15px;
+    width: 100px;
+}
+
+ion-card {
+    color: black;
+    min-height: 160px;
+    @media (max-width: 320px) {
+        min-height: 150px;
+    }
+
+    &.small {
+        min-height: 80px;
+        @media (max-width: 320px) {
+            min-height: 70px;
+        }
+        height: 100%;
+
+        .icon {
+            width: 25px;
+            height: 25px;
+        }
+    
+        .label {
+            font-size: 1.2em;
+        }
+    }
+}
+
+ion-card-header {
+    color: black;
+}
+
+.icon {
+    width: 40px;
+    height: 40px;
+    margin-top: 25px;
+}
+
+.warning-tile {
+    &.milk {
+        border: 1px solid var(--ion-color-secondary);
+    }
+    &.fuel {
+        border: 1px solid var(--ion-color-tertiary);
+    }
+    &.effluent {
+        border: 1px solid var(--ion-color-effluent);
+    }
+    ion-card-header {
+        &.milk {
+            background-color: var(--ion-color-secondary);
+        }
+        &.fuel {
+            background-color: var(--ion-color-tertiary);
+        }
+        &.effluent {
+            background-color: var(--ion-color-effluent);
+        }
+        p {
+            color: white;
+        }
+    }
+	animation: pulse 1.75s infinite;
+}
+
+@keyframes pulse {
+	0% {
+		transform: scale(1);
+	}
+
+	70% {
+		transform: scale(1.05);
+	}
+
+	100% {
+		transform: scale(1);
+	}
+}
+
+.bold {
+    font-weight: 600;
+}
+
+.card {
+    border: 1px solid rgb(122, 122, 122);
+    ion-card-header {
+        background-color:  rgb(122, 122, 122);
+    }
+    ion-card-content {
+        padding-top: 40px;
+    }
+}
+
+.lidarDistance {
+    border: 1px solid rgb(100, 220, 100);
+    ion-card-header {
+        background-color: rgb(100, 220, 100);
+    }
+}
+
+.stirrer {
+    border: 1px solid rgb(80, 80, 230);
+    ion-card-header {
+        background-color:  rgb(80, 80, 230);
+    }
+}
+
+.vatTemp {
+    border: 1px solid rgb(240, 100, 100);
+    ion-card-header {
+        background-color:  rgb(240, 100, 100);
+    }
+}
+
+.inletTemp {
+    border: 1px solid rgb(250, 250, 110);
+    ion-card-header {
+        background-color: rgb(250, 250, 110);
+    }
+}
+
+.lidarDistance, .stirrer, .vatTemp, .inletTemp {
+    ion-card-content {
+        padding-top: 0px;
+    }
+}
+

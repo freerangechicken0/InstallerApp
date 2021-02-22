@@ -1,0 +1,17 @@
+<ion-card button class="{{type}} card">
+  <ion-card-header class="ion-no-padding">
+    <ion-row class="ion-justify-content-center">
+      <ion-text>
+        <p class="tile-header">{{printableType(type)}}</p>
+      </ion-text>
+    </ion-row>
+  </ion-card-header>
+  <ion-card-content>
+    <ion-row class="ion-justify-content-center">
+      <img *ngIf="type" [src]="'../../../assets/svgs/' + type + '.svg'" class="icon">
+    </ion-row>
+    <ion-row class="ion-justify-content-center">
+      <p class="ion-no-margin tile-title">{{serialNumber}}</p>
+    </ion-row>
+  </ion-card-content>
+</ion-card>

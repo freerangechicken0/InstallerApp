@@ -1,0 +1,61 @@
+<ion-content class="primaryBackground">
+    <ion-row class="ion-justify-content-center ion-align-items-center formRow">
+        <ion-grid>
+            <ion-row class="ion-justify-content-center ion-margin-bottom">
+                <img class="levno-banner" src="../../../assets/svgs/levno_logo.svg">
+            </ion-row>
+            <ion-row class="ion-justify-content-center">
+                <ion-label>
+                    <ion-text color="light">
+                        <h1>Installer App</h1>
+                    </ion-text>
+                </ion-label>
+            </ion-row>
+            <ion-row class="ion-justify-content-center">
+                <ion-col class="ion-align-content-center ion-padding-top" size-md="6" size-lg="5" size-xs="12">
+                    <form id="loginForm" [formGroup]="loginForm" (ngSubmit)="onSubmit($event)" autocomplete="on"
+                        class="m-auto auth-form" (keyup.enter)="onSubmit($event)">
+                        <ion-item class="ion-margin-bottom white-input rounded-top">
+                            <ion-label position="stacked" class="custom-label" mode="md">
+                                <ion-text color="secondary">Email*</ion-text>
+                            </ion-label>
+                            <ion-input mode="md" autocomplete="email" [formControl]="loginForm.controls['email']"
+                                required type="email" name="email">
+                            </ion-input>
+                        </ion-item>
+                        <ion-item class="ion-margin-bottom white-input rounded-top">
+                            <ion-label position="stacked" class="custom-label" mode="md">
+                                <ion-text color="secondary">Password*</ion-text>
+                            </ion-label>
+                            <ion-input mode="md" autocomplete="password" [formControl]="loginForm.controls['password']"
+                                required [type]="showPassword ? 'text' : 'password'" name="Password">
+                            </ion-input>
+                            <ion-icon slot="end" [name]="showPassword ? 'eye-off' : 'eye'"
+                                class="ion-margin-top clickable" (click)="showPassword = !showPassword"></ion-icon>
+                        </ion-item>
+                        <ion-button class="ion-text-center ion-no-margin ion-margin-top white-text" expand="block"
+                            size="large" color="secondary" [disabled]="loading" type="submit" mode="md">
+                            <ion-row>
+                                <ion-col class="white-text bold-text fs-16 fwb">
+                                    LOGIN
+                                </ion-col>
+                            </ion-row>
+                        </ion-button>
+                        <div class="ion-text-center ion-margin-top">
+                            <a routerLink="/auth/forgot" routerDirection="forward" class="fs-14 no-decoration">
+                                <p class="ion-padding-top">
+                                    <ion-text color="secondary">Forgot password?</ion-text>
+                                </p>
+                            </a>
+                        </div>
+                        <ion-item lines="none" *ngIf="error" color="secondary">
+                            <ion-label class="ion-text-center">
+                                <h5 class="white-text bold-text fs-14">{{ error }}</h5>
+                            </ion-label>
+                        </ion-item>
+                    </form>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </ion-row>
+</ion-content>

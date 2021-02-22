@@ -1,0 +1,42 @@
+<ion-header>
+    <ion-toolbar color="primary" class="ion-justify-content-center ion-text-center">
+        <ion-title>{{sensorId}}</ion-title>
+        <p class="ion-no-margin">{{transceiverId}}</p>
+    </ion-toolbar>
+</ion-header>
+<ion-content class="greyBackground">
+    <!-- <ion-list>
+        <ion-item>
+            <ion-label>
+                Vat
+            </ion-label>
+            <ion-select>
+                <ion-select-option *ngFor="let vat of nVats" value="{{vat}}">{{vat}}</ion-select-option>
+            </ion-select>
+        </ion-item>
+    </ion-list> -->
+    <ion-list>
+        <ion-radio-group value="{{assignment}}" (ionChange)="radioGroupChange($event)">
+            <ion-item *ngFor="let option of sensorOptions">
+                <ion-label>{{option[0]}}</ion-label>
+                <ion-radio slot="start" value="{{option[1]}}"></ion-radio>
+            </ion-item>
+        </ion-radio-group>
+    </ion-list>
+    <ion-row>
+        <ion-col>
+            <ion-card button (click)="cancel()">
+                <ion-card-content>
+                    <p>Cancel</p>
+                </ion-card-content>
+            </ion-card>
+        </ion-col>
+        <ion-col>
+            <ion-card button (click)="confirm()">
+                <ion-card-content>
+                    <p>Confirm</p>
+                </ion-card-content>
+            </ion-card>
+        </ion-col>
+    </ion-row>
+</ion-content>

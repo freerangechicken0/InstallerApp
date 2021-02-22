@@ -1,0 +1,50 @@
+<ion-header>
+    <ion-toolbar color="primary" class="white-text" mode="md">
+        <ion-buttons slot="start">
+            <ion-button (click)="onClose()" type="button" class="primary-action" size="large" color="primary"
+                fill="solid">
+                <ion-icon name="arrow-back" color="secondary"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title>{{type}} Search</ion-title>
+        <ion-row>
+            <ion-col>
+                <ion-searchbar (ionInput)="filter($event)"></ion-searchbar>
+            </ion-col>
+        </ion-row>
+    </ion-toolbar>
+</ion-header>
+<ion-content class="greyBackground">
+    <ion-row>
+        <ion-col>
+            <ion-row *ngIf="!objects">
+                <ion-col class="ion-text-center">
+                    <ion-spinner name="crescent" color="secondary"></ion-spinner>
+                </ion-col>
+            </ion-row>
+            <ng-container *ngIf="objects">
+                <ion-list>
+                    <ion-item *ngIf="!filteredObjects.length">
+                        <ion-label>
+                            No Matches
+                        </ion-label>
+                    </ion-item>
+                    <ion-item *ngFor="let object of loadedObjects" button
+                        (click)="selectObject(object)">
+                        <ion-label *ngIf="type === 'Transceiver'">
+                            <h2>{{object.serialNumber}}</h2>
+                        </ion-label>
+                        <ion-label *ngIf="type === 'Product'">
+                            <h2>{{object.name.replace(object.supplierNumber, "")}}</h2>
+                            <p>{{object.supplierNumber}} - {{object.type}}</p>
+                        </ion-label>
+                    </ion-item>
+                </ion-list>
+                <ion-infinite-scroll threshold="20%" (ionInfinite)="doInfinite($event)">
+                    <ion-infinite-scroll-content loadingSpinner="crescent" class="loadingSpinner">
+                    </ion-infinite-scroll-content>
+                </ion-infinite-scroll>
+            </ng-container>
+        </ion-col>
+    </ion-row>
+</ion-content>

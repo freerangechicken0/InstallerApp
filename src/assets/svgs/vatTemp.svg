@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <clipPath id="clip-milk-temp">
+      <rect width="40" height="40"/>
+    </clipPath>
+  </defs>
+  <g id="milk-temp" clip-path="url(#clip-milk-temp)">
+    <g id="Layer_2" data-name="Layer 2">
+      <rect id="artboard" width="40" height="40" opacity="0" style="fill: rgb(240, 100, 100);"/>
+      <path id="middle" d="M19,25.667a5,5,0,1,1-6.667-4.7V5.667a1.667,1.667,0,0,1,3.333,0v15.3A5,5,0,0,1,19,25.667Z" transform="translate(6 2.667)" style="fill: rgb(240, 100, 100);"/>
+      <path id="outline" d="M15.334,3.667A3.333,3.333,0,0,1,18.667,7V21.2l.667.5a6.667,6.667,0,1,1-8,0L12,21.2V7a3.333,3.333,0,0,1,3.333-3.333m0-1.667a5,5,0,0,0-5,5V20.333a8.333,8.333,0,1,0,10,0V7a5,5,0,0,0-5-5Z" transform="translate(4.666 1.333)" style="fill: rgb(240, 100, 100);"/>
+    </g>
+  </g>
+</svg>

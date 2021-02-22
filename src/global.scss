@@ -1,0 +1,493 @@
+:root {
+    --ion-color-primary: #26283F;
+    --ion-color-primary-rgb: 0, 44, 119;
+    --ion-color-primary-contrast: #ffffff;
+    --ion-color-primary-contrast-rgb: 255, 255, 255;
+    --ion-color-primary-shade: #002769;
+    --ion-color-primary-tint: #1a4185;
+
+    --ion-color-secondary: #F5851F;
+    --ion-color-secondary-rgb: #ffffff;
+    --ion-color-secondary-contrast: #000000;
+    --ion-color-secondary-contrast-rgb: 0, 0, 0;
+    --ion-color-secondary-shade: #d8761b;
+    --ion-color-secondary-tint: #f79235;
+
+    --ion-color-tertiary: #33B1A6;
+    --ion-color-tertiary-rgb: 51, 177, 166;
+    --ion-color-tertiary-contrast: #ffffff;
+    --ion-color-tertiary-contrast-rgb: 255, 255, 255;
+    --ion-color-tertiary-shade: #33B1A6;
+    --ion-color-tertiary-tint: #33B1A6;
+
+    --ion-color-success: #10dc60;
+    --ion-color-success-rgb: 16, 220, 96;
+    --ion-color-success-contrast: #ffffff;
+    --ion-color-success-contrast-rgb: 255, 255, 255;
+    --ion-color-success-shade: #0ec254;
+    --ion-color-success-tint: #28e070;
+
+    --ion-color-warning: #ffce00;
+    --ion-color-warning-rgb: 255, 206, 0;
+    --ion-color-warning-contrast: #ffffff;
+    --ion-color-warning-contrast-rgb: 255, 255, 255;
+    --ion-color-warning-shade: #e0b500;
+    --ion-color-warning-tint: #ffd31a;
+
+    --ion-color-grey-background: #F0F1F2;
+    --ion-color-grey-background-rgb: 240,241,242;
+    --ion-color-grey-background-contrast: #000000;
+    --ion-color-grey-background-contrast-rgb: 0,0,0;
+    --ion-color-grey-background-shade: #d3d4d5;
+    --ion-color-grey-background-tint: #f2f2f3;
+
+    --ion-color-danger: #f04141;
+    --ion-color-danger-rgb: 245, 61, 61;
+    --ion-color-danger-contrast: #ffffff;
+    --ion-color-danger-contrast-rgb: 255, 255, 255;
+    --ion-color-danger-shade: #d33939;
+    --ion-color-danger-tint: #f25454;
+
+    --ion-color-dark: #ACACB5;
+    --ion-color-dark-rgb: 34, 34, 34;
+    --ion-color-dark-contrast: #ffffff;
+    --ion-color-dark-contrast-rgb: 255, 255, 255;
+    --ion-color-dark-shade: #1e2023;
+    --ion-color-dark-tint: #383a3e;
+
+    --ion-color-medium: #989aa2;
+    --ion-color-medium-rgb: 152, 154, 162;
+    --ion-color-medium-contrast: #ffffff;
+    --ion-color-medium-contrast-rgb: 255, 255, 255;
+    --ion-color-medium-shade: #86888f;
+    --ion-color-medium-tint: #a2a4ab;
+
+    --ion-color-light: #f4f5f8;
+    --ion-color-light-rgb: 244, 244, 244;
+    --ion-color-light-contrast: #000000;
+    --ion-color-light-contrast-rgb: 0, 0, 0;
+    --ion-color-light-shade: #d7d8da;
+    --ion-color-light-tint: #f5f6f9;
+
+    --ion-color-milk: #F5851F;
+    --ion-color-milk-rgb: 245,133,31;
+    --ion-color-milk-contrast: #000000;
+    --ion-color-milk-contrast-rgb: 0,0,0;
+    --ion-color-milk-shade: #d8751b;
+    --ion-color-milk-tint: #f69135;
+
+    --ion-color-fuel: #33B1A6;
+    --ion-color-fuel-rgb: 51,177,166;
+    --ion-color-fuel-contrast: #000000;
+    --ion-color-fuel-contrast-rgb: 0,0,0;
+    --ion-color-fuel-shade: #2d9c92;
+    --ion-color-fuel-tint: #47b9af;
+
+    --ion-color-silo: #3395B1;
+    --ion-color-silo-rgb: 51,149,177;
+    --ion-color-silo-contrast: #ffffff;
+    --ion-color-silo-contrast-rgb: 255,255,255;
+    --ion-color-silo-shade: #2d839c;
+    --ion-color-silo-tint: #47a0b9;
+
+    --ion-color-water: #28479D;
+    --ion-color-water-rgb: 40,71,157;
+    --ion-color-water-contrast: #ffffff;
+    --ion-color-water-contrast-rgb: 255,255,255;
+    --ion-color-water-shade: #233e8a;
+    --ion-color-water-tint: #3e59a7;
+
+    --ion-color-effluent: #58585B;
+    --ion-color-effluent-rgb: 88,88,91;
+    --ion-color-effluent-contrast: #ffffff;
+    --ion-color-effluent-contrast-rgb: 255,255,255;
+    --ion-color-effluent-shade: #4d4d50;
+    --ion-color-effluent-tint: #69696b;
+}
+
+@font-face {
+    font-family: 'Sofia Pro';
+    src: url('assets/font/SofiaProRegular.eot');
+    src: local('Sofia Pro Regular'), local('SofiaProRegular'),
+    url('assets/font/SofiaProRegular.woff2') format('woff2'),
+    url('assets/font/SofiaProRegular.woff') format('woff'),
+    url('assets/font/SofiaProRegular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Sofia Pro Semi Bold';
+    src: url('assets/font/SofiaProSemiBold.eot');
+    src: local('Sofia Pro Semi Bold'), local('SofiaProSemiBold'),
+    url('assets/font/SofiaProSemiBold.woff2') format('woff2'),
+    url('assets/font/SofiaProSemiBold.woff') format('woff'),
+    url('assets/font/SofiaProSemiBold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+}
+
+* {
+    --ion-default-font: 'Sofia Pro';
+    --ion-font-family: 'Sofia Pro', 'Roboto', 'Helvetica Neue', sans-serif;
+}
+
+/* Core CSS required for Ionic components to work properly */
+@import "~@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "~@ionic/angular/css/normalize.css";
+@import "~@ionic/angular/css/structure.css";
+@import "~@ionic/angular/css/typography.css";
+@import '~@ionic/angular/css/display.css';
+
+/* Optional CSS utils that can be commented out */
+@import "~@ionic/angular/css/padding.css";
+@import "~@ionic/angular/css/float-elements.css";
+@import "~@ionic/angular/css/text-alignment.css";
+@import "~@ionic/angular/css/text-transformation.css";
+@import "~@ionic/angular/css/flex-utils.css";
+@import './styles/utils.scss';
+
+.bold-text {
+    font-family: 'Sofia Pro Semi Bold', 'Roboto', 'Helvetica Neue', sans-serif;
+}
+
+.auth-form {
+    max-width: 350px;
+}
+
+.list-md {
+    padding-bottom: 0;
+}
+
+.blue-gradient {
+    background-image: linear-gradient(323.2308839244303deg, rgba(33, 85, 212, 1), rgba(0, 44, 119, 1));
+    --background: none;
+}
+
+.greyBackground {
+    --ion-background-color: var(--ion-color-grey-background);
+}
+
+.primaryBackground {
+    --ion-background-color: var(--ion-color-primary);
+}
+
+.primary-background {
+    // Some ionic components can't take --ion-background-color property.
+    background-color: var(--ion-color-primary);
+}
+
+.orangeBackground {
+    background-color: var(--ion-color-milk);
+}
+
+.orangeText {
+    color: var(--ion-color-milk);
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.alert-header-text {
+    color: var(--ion-color-effluent); 
+    margin-bottom: 0; 
+    padding-left: 10px;
+}
+
+.white-text {
+    color: #ffffff;
+}
+
+ion-button {
+    letter-spacing: 0px;
+}
+
+
+ion-card {
+    color: #222222;
+    background-color: white;
+    margin: 0;
+    box-shadow: 0px 0px 4px #00000033 ;
+    border: #E7EAED 1px solid;
+    border-radius: 5px;
+
+    &.outOfSpec {
+        background: var(--ion-color-secondary);
+        color: var(--ion-color-light);
+    }
+
+    &.fab-below {
+        margin-bottom: 75px;
+    }
+
+    h1, .card-content-md h1, .card-content-ios h1 {
+        font-size: 32px;
+        font-weight: 600;
+    }
+
+    p {
+        letter-spacing: -0.35px;
+    }
+
+    p.title {
+        font-size: 12px;
+        line-height: 1;
+    }
+
+    p.subTitle {
+        color: #757676;
+        line-height: 1;
+        font-size: 12px;
+    }
+
+    img {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    ion-card-header {
+        padding-top: 8px;
+        padding-bottom: 8px;
+    }
+
+    ion-card-content, .card-content-ios {
+        padding: 0;
+        font-size: 14px;
+    }
+}
+
+ion-card-header img {
+    width: inherit !important;
+}
+
+.clickable-card {
+    width: 0;
+    height: 0;
+    margin-left: -20px;
+    border-top: 20px solid var(--ion-color-secondary);
+    border-left: 20px solid transparent;
+}
+
+.grey-text {
+    color: var(--ion-color-dark);
+}
+
+.badge-text {
+    color: #424242;
+}
+
+.last-updated {
+    font-size: 12px;
+    color: #999999;
+}
+
+.product-content {
+    padding: 10px 5px 5px 5px;
+}
+
+.error {
+    color: var(--ion-color-danger);
+}
+
+.item-interactive {
+    --highlight-background: unset;      // Remove red underline from inputs
+}
+
+.clear-input {
+    border: 1px solid white;
+    color: white;
+    min-height: 53px;
+    max-height: 53px;
+    --padding-top: 17px !important;
+    --padding-bottom: 18px !important;
+    --padding-start: 12px !important;
+}
+
+/* 
+ * This is overriding the style in node_modules/@ionic/angular/css/structure.css
+ * Ionic sets the display of html to none if it hasn't had the hydrated class applied to it yet.
+ * Since the app can take a while to load ionic, this results in a blank page and without this style
+ * to prevent the display: none, we can't add content into app-root to display a loading screen.
+*/
+html:not(.hydrated) body {
+    display: initial !important;
+}
+
+// Remove the underlines and radio button style from the org selector.
+// Ionic team states they wont add options to do this in the html any time soon - but gave this workaround.
+// https://github.com/ionic-team/ionic/issues/12310
+
+ion-select-popover ion-list ion-item {
+    --border-width: 0;
+    --inner-border-width: 0;
+    &.item-radio-checked {
+        color: var(--ion-color-secondary);
+        --color-hover: var(--ion-color-secondary);
+    }
+}
+  
+ion-select-popover ion-list ion-item ion-radio {
+    --color: transparent;
+    --color-checked: transparent;
+}
+
+// Hide border line under segment buttons.
+ion-segment-button {
+    --indicator-color: #ffffff;
+    --indicator-box-shadow: 0px;
+    --indicator-height: 0px;
+}
+
+.large-modal {
+    --width: 80%;
+    --height: 80%;
+}
+
+.fullscreen-modal {
+    --height: 100%; 
+    --width: 100%;
+}
+
+.action-sheet-modal {
+    .modal-wrapper {
+        position: absolute;
+        width: 100%;
+        height: 45%;
+        top: calc(100% - (45%));
+    }
+}
+
+.flat-card {
+    border-radius: 0px;
+    background-color: white;
+    box-shadow: none;
+}
+
+/*
+    THIS IS OVERRIDING THE AUTOFILLED FORM INPUTS BACKGROUND COLOR SET
+    BY BROWSERS.
+*/
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0px 1000px white inset !important;
+}
+
+// Auto fill font family and size on input fields overrides untill focus.
+:-webkit-autofill::first-line{
+  font-family: 'Sofia Pro' !important;
+  font-size: 16px;
+}
+
+.ion-color-grey-background {
+    --ion-color-base: var(--ion-color-grey-background);
+    --ion-color-base-rgb: var(--ion-color-grey-background-rgb);
+    --ion-color-contrast: var(--ion-color-grey-background-contrast);
+    --ion-color-contrast-rgb: var(--ion-color-grey-background-contrast-rgb);
+    --ion-color-shade: var(--ion-color-grey-background-shade);
+    --ion-color-tint: var(--ion-color-grey-background-tint);
+  }
+.ion-color-milk {
+    --ion-color-base: var(--ion-color-milk);
+    --ion-color-base-rgb: var(--ion-color-milk-rgb);
+    --ion-color-contrast: var(--ion-color-milk-contrast);
+    --ion-color-contrast-rgb: var(--ion-color-milk-contrast-rgb);
+    --ion-color-shade: var(--ion-color-milk-shade);
+    --ion-color-tint: var(--ion-color-milk-tint);
+}
+
+.ion-color-silo {
+    --ion-color-base: var(--ion-color-silo);
+    --ion-color-base-rgb: var(--ion-color-silo-rgb);
+    --ion-color-contrast: var(--ion-color-silo-contrast);
+    --ion-color-contrast-rgb: var(--ion-color-silo-contrast-rgb);
+    --ion-color-shade: var(--ion-color-silo-shade);
+    --ion-color-tint: var(--ion-color-silo-tint);
+}
+
+.ion-color-water {
+    --ion-color-base: var(--ion-color-water);
+    --ion-color-base-rgb: var(--ion-color-water-rgb);
+    --ion-color-contrast: var(--ion-color-water-contrast);
+    --ion-color-contrast-rgb: var(--ion-color-water-contrast-rgb);
+    --ion-color-shade: var(--ion-color-water-shade);
+    --ion-color-tint: var(--ion-color-water-tint);
+}
+
+.ion-color-effluent {
+    --ion-color-base: var(--ion-color-effluent);
+    --ion-color-base-rgb: var(--ion-color-effluent-rgb);
+    --ion-color-contrast: var(--ion-color-effluent-contrast);
+    --ion-color-contrast-rgb: var(--ion-color-effluent-contrast-rgb);
+    --ion-color-shade: var(--ion-color-effluent-shade);
+    --ion-color-tint: var(--ion-color-effluent-tint);
+}
+
+.ion-color-fuel {
+    --ion-color-base: var(--ion-color-fuel);
+    --ion-color-base-rgb: var(--ion-color-fuel-rgb);
+    --ion-color-contrast: var(--ion-color-fuel-contrast);
+    --ion-color-contrast-rgb: var(--ion-color-fuel-contrast-rgb);
+    --ion-color-shade: var(--ion-color-fuel-shade);
+    --ion-color-tint: var(--ion-color-fuel-tint);
+}
+
+.custom-alert-button-group .alert-button-group {
+    // Water has 3 different product types, so just default to that to capture them and override for the other product types.
+    background-color: var(--ion-color-water);
+
+    .alert-button-inner {
+        justify-content: center;
+    }
+
+    .alert-button {
+        color: white;
+        font-weight: bold;
+        width: 100%;
+        padding: 10px 0px;
+    }
+}
+
+.custom-alert-button-group-multiple .alert-button-group {
+    .alert-button-inner {
+        justify-content: center;
+    }
+
+    .alert-button {
+        font-weight: bold;
+        width: 45%;
+        padding: 10px 0px;
+    }
+}
+
+.milk .alert-button-group {
+    background-color: var(--ion-color-secondary);
+}
+
+.fuel .alert-button-group {
+    background-color: var(--ion-color-tertiary);
+}
+
+.silo .alert-button-group {
+    background-color: var(--ion-color-silo);
+}
+
+.effluent .alert-button-group {
+    background-color: var(--ion-color-effluent);
+}
+
+.picker-opt-selected {
+    color: var(--ion-color-secondary) !important; 
+}
+
+ion-refresher.refresher-native ion-spinner {
+    color: var(--ion-color-secondary) !important;
+}
+
+ion-refresher.refresher-native ion-icon {
+    color: var(--ion-color-secondary) !important;
+}
