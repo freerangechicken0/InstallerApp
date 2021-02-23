@@ -1,17 +1,26 @@
-<ion-card button class="{{type}} card">
+<ion-card [button]="serialNumber" class="{{type}} {{serialNumber ? 'assigned' : null}} {{scanned ? 'scanned' : null}} card">
   <ion-card-header class="ion-no-padding">
     <ion-row class="ion-justify-content-center">
-      <ion-text>
-        <p class="tile-header">{{printableType(type)}}</p>
-      </ion-text>
+      <ion-col *ngIf="serialNumber" class="ion-no-padding" size="1">
+      </ion-col>
+      <ion-col class="ion-no-padding">
+        <ion-text>
+          <p class="tile-header">{{printableType(type)}}</p>
+        </ion-text>
+      </ion-col>
+      <ion-col *ngIf="serialNumber" class="ion-no-padding" size="1">
+        <ion-button class="ion-no-padding ion-float-right" fill="clear" size="small" (click)="removeSensor($event)">
+          <ion-icon name="close" color="black"></ion-icon>
+        </ion-button>
+      </ion-col>
     </ion-row>
   </ion-card-header>
   <ion-card-content>
     <ion-row class="ion-justify-content-center">
-      <img *ngIf="type" [src]="'../../../assets/svgs/' + type + '.svg'" class="icon">
+      <ion-icon *ngIf="type" [src]="'../../../assets/svgs/' + type + '.svg'" class="icon"></ion-icon>
     </ion-row>
     <ion-row class="ion-justify-content-center">
-      <p class="ion-no-margin tile-title">{{serialNumber}}</p>
+      <p class="ion-no-margin tile-title">{{serialNumber ? serialNumber : 'Unassigned'}}</p>
     </ion-row>
   </ion-card-content>
 </ion-card>

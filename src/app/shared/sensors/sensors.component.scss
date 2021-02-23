@@ -1,0 +1,29 @@
+.customPadding {
+  padding: 13px 16px;
+}
+
+ion-button {
+  height: 100%;
+  display: block;
+  padding-right: 13px;
+}
+
+.icon {
+  font-size: 18px;
+}
+
+.lidarDistance.icon {
+  color: var(--ion-color-lidarDistance);
+}
+
+.stirrer.icon {
+  color: var(--ion-color-stirrer);
+}
+
+.vatTemp.icon {
+  color: var(--ion-color-vatTemp);
+}
+
+.inletTemp.icon {
+  color :var(--ion-color-inletTemp);
+}

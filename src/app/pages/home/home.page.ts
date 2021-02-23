@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
+import { MenuController } from '@ionic/angular';
+import { Product } from 'src/app/core/_models/product';
+import { MixpanelService } from 'src/app/core/_services/mixpanel.service';
 
 @Component({
   selector: 'app-home',
@@ -7,19 +10,35 @@ import { Router } from '@angular/router';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
+  public selectedProduct: Product = null;
 
   constructor(
-    private router: Router
+    private router: Router,
+    private menuController: MenuController,
+    private mixpanelService: MixpanelService
   ) { }
 
+  ionViewWillEnter() {
+    this.menuController.enable(true);
+  }
+
   ngOnInit() {
+    this.mixpanelService.trackEvent("Opened home page");
   }
 
-  goToMilk() {
-    this.router.navigate(['/assign']);
-  }
-
-  goToFuel() {
+  goToMilk(product: Product) {
+    let navExtras: NavigationExtras = {
+      state: {
+        product: product
+      }
+    };
+    // switch (product.type) {
+        //   case 'milk': {
+        //     this.router.navigate(['/assign'], navExtras);
+        //     break;
+        //   }
+        // }
+    this.router.navigate(['/assign'], navExtras);
   }
 
 }

@@ -1,26 +1,7 @@
 <app-org-header title="Installer App"></app-org-header>
 
 <ion-content class="greyBackground">
-  <ion-row class="ion-no-padding ion-justify-content-center">
-    <ion-col class="ion-no-padding" size-xs="12" size-md="8" size-lg="6">
-      <ion-row>
-        <ion-col>
-          <ion-card button (click)="goToMilk()">
-            <ion-card-content>
-              <p>Milk Install</p>
-            </ion-card-content>
-          </ion-card>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col>
-          <ion-card button (click)="goToFuel()">
-            <ion-card-content>
-              <p>Fuel Install</p>
-            </ion-card-content>
-          </ion-card>
-        </ion-col>
-      </ion-row>
-    </ion-col>
-  </ion-row>
+  <app-select-button #productSearch (objectSelected)="goToMilk($event)" type="Product" [selectedObject]=null
+    [info]=false>
+  </app-select-button>
 </ion-content>

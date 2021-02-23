@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-tile',
@@ -8,14 +8,21 @@ import { Component, Input, OnInit } from '@angular/core';
 export class TileComponent implements OnInit {
   @Input() serialNumber: string;
   @Input() type: string;
+  @Input() scanned: boolean = false;
+  @Output() sensorRemoved: EventEmitter<any> = new EventEmitter();
 
   constructor() { }
 
   ngOnInit() {
   }
 
-  printableType(type: string): string {
-    switch(type) {
+  public removeSensor(event) {
+    this.sensorRemoved.emit(this.type);
+    event.stopPropagation();
+  }
+
+  public printableType(type: string): string {
+    switch (type) {
       case "lidarDistance": {
         return "Lidar Sensor"
       }
@@ -28,7 +35,7 @@ export class TileComponent implements OnInit {
       case "inletTemp": {
         return "Inlet Temperature"
       }
-      case null: {}
+      case null: { }
       case "": {
         return "Unassigned"
       }

@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-toolbar color="primary" class="ion-justify-content-center ion-text-center">
+    <ion-title>Select a job</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="greyBackground">
+  <ion-row class="ion-justify-content-center">
+    <ion-col class="ion-align-content-center">
+      <ion-list>
+        <ng-container *ngIf="jobs && jobs.length">
+          <ion-item *ngFor="let job of jobs" [button]="job.details && !job.details.original" (click)="job.details && !job.details.original && jobSelected(job)">
+            <ion-label>
+              <ng-container *ngIf="!job.details">
+                <ion-row class="ion-no-padding">
+                  <ion-col class="ion-no-padding">
+                    <h2>Job: {{job.simproJobId}}</h2>
+                  </ion-col>
+                  <ion-col class="ion-no-padding" size="3">
+                    <ion-spinner name="crescent" color="secondary"></ion-spinner>
+                  </ion-col>
+                </ion-row>
+              </ng-container>
+              <ng-container *ngIf="job.details">
+                <ng-container *ngIf="!job.details.original">
+                  <h2>{{stripHtml(job.details.description)}}</h2>
+                  <p>Type: {{job.details.type}}</p>
+                  <p>{{job.details.status}}</p>
+                </ng-container>
+                <ng-container *ngIf="job.details.original">
+                  <h2>Job: {{job.simproJobId}}</h2>
+                  <p *ngFor="let error of job.details.original.errors">{{error.message}}</p>
+                </ng-container>
+              </ng-container>
+            </ion-label>
+          </ion-item>
+        </ng-container>
+        <ion-item *ngIf="!jobs || !jobs.length">
+          <ion-label>
+            <h2>This product has no jobs</h2>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-col>
+  </ion-row>
+</ion-content>

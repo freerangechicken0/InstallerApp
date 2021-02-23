@@ -10,18 +10,18 @@ const routes: Routes = [
   },
   {
     path: 'home',
-    loadChildren: () => import('./pages/home/home.module').then( m => m.HomePageModule),
+    loadChildren: () => import('./pages/home/home.module').then(m => m.HomePageModule),
     canActivate: [AuthGuard]
   },
   {
     path: 'assign',
-    loadChildren: () => import('./pages/assign/assign.module').then( m => m.AssignPageModule),
+    loadChildren: () => import('./pages/assign/assign.module').then(m => m.AssignPageModule),
     canActivate: [AuthGuard]
   },
   {
     path: 'login',
-    loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule)
-  },
+    loadChildren: () => import('./pages/login/login.module').then(m => m.LoginPageModule)
+  }
 ];
 
 @NgModule({

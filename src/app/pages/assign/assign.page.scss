@@ -1,20 +1,92 @@
 .top {
-    height: 110px;
-    --min-height: 48px;
-    box-shadow: #00000026 0px 3px 4px;
-    ion-segment {
-        height: 48px;
-    }
+  height: 110px;
+  --min-height: 48px;
+  box-shadow: #00000026 0px 3px 4px;
+  ion-segment {
+    height: 48px;
+  }
 }
 
 ion-select::part(icon) {
-    display: none !important;
+  display: none !important;
 }
 
 .icon {
-      padding-top: 4px;
+  padding-top: 4px;
+  font-size: 14px;
+  margin-left: 0px;
+  pointer-events: none;
 }
 
 ion-fab-button.fab-button-close-active {
-    --color:  #F5851F;
+  --color: #f5851f;
+}
+
+ion-fab-button[data-desc] {
+  position: relative;
+}
+
+ion-fab-button[data-desc]::after {
+  cursor: pointer;
+  position: absolute;
+  content: attr(data-desc);
+  z-index: 1;
+  right: 45px;
+  bottom: 8px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background-color: rgb(245, 245, 245);
+  color: black;
+  box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2),
+    0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
+}
+
+ion-fab-button[data-desc]:hover::after {
+  background-color: white;
+}
+
+.fab-button-disabled {
+  opacity: 0.5;
+}
+
+ion-backdrop {
+  cursor: default;
+  position: fixed;
+  background-color: white !important;
+}
+
+.backdrop {
+  transition: 0.2s ease-in-out;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.backdropOpen {
+  opacity: 0.8;
+  pointer-events: all;
+}
+
+.custom-label {
+  font-size: 14px;
+}
+
+.white-input {
+  --ion-color-base: #FFFFFF;
+  --ion-background-color: #FFFFFF;
+}
+
+ion-select, ion-label {
+  font-size: 14px !important;
+  padding-left: 16px;
+}
+
+.verticalLine {
+  width: 2px;
+  background: rgba(100, 100, 100, 0.2);
+  margin-top: 0;
+  position: relative;
+}
+
+.placeholder {
+  opacity: 0.33;
 }

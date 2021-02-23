@@ -1,0 +1,63 @@
+<ion-header>
+  <ion-toolbar color="primary" class="white-text" mode="md">
+    <ion-buttons slot="start">
+      <ion-button (click)="onClose()" type="button" class="primary-action" size="large" color="primary" fill="solid">
+        <ion-icon name="arrow-back" color="secondary"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{product.supplierNumber}} Photos</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="greyBackground">
+  <ion-row class="mainRow">
+    <ion-col class="ion-no-padding">
+      <ion-row class="cameraPlaceholder">
+        <ion-col>
+
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-toolbar class="vatSwitcher">
+            <ion-segment class="tab-selector ion-justify-content-center ion-align-items-center w-100">
+              <ion-row class="ion-justify-content-center w-100">
+                <ion-col *ngIf="nVats > 1" size="3">
+                  <ion-segment-button mode="md" [value]="currentVatIndex - 1" (click)="goBack()"
+                    class="side-navigate-button">
+                    <ion-icon name="chevron-back" color="secondary" class="ion-align-self-start"></ion-icon>
+                  </ion-segment-button>
+                </ion-col>
+                <ion-col class="ion-justify-content-center ion-text-center">
+                  <p class="ion-margin-top">Vat {{currentVatIndex + 1}}</p>
+                </ion-col>
+                <ion-col *ngIf="nVats > 1" size="3">
+                  <ion-segment-button mode="md" [value]="currentVatIndex + 1" (click)="goForward()"
+                    class="side-navigate-button">
+                    <ion-icon name="chevron-forward" color="secondary" class="ion-align-self-end"></ion-icon>
+                  </ion-segment-button>
+                </ion-col>
+              </ion-row>
+            </ion-segment>
+          </ion-toolbar>
+        </ion-col>
+      </ion-row>
+      <ion-row class="buttons">
+        <ion-col *ngIf="transceiverPhotos[currentVatIndex]" size="4">
+          <ion-button [color]="transceiverPhotos[currentVatIndex].photo ? 'success' : 'primary'" [disabled]="noPhotos" class="ion-text-wrap" (click)="takePhoto(transceiverPhotos[currentVatIndex], currentVatIndex)">
+            {{transceiverPhotos[currentVatIndex].value}}
+          </ion-button>
+        </ion-col>
+        <ion-col *ngFor="let photo of vatPhotos[currentVatIndex]" size="4">
+          <ion-button [color]="photo.photo ? 'success' : 'primary'" [disabled]="noPhotos" class="ion-text-wrap" (click)="takePhoto(photo, currentVatIndex)">
+            {{photo.value}}
+          </ion-button>
+        </ion-col>
+        <ion-col size="4">
+          <ion-button [color]="noPhotos ? 'success' : 'secondary'" class="ion-text-wrap" (click)="noPhotosPressed()">
+            {{noPhotos ? 'Enable photos' : 'No photos'}}
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-col>
+  </ion-row>
+</ion-content>

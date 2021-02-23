@@ -10,6 +10,13 @@ import { InfoModalComponent } from './info-modal/info-modal.component';
 import { TimeAgoPipe } from 'time-ago-pipe';
 import { ManualEntryComponent } from './manual-entry/manual-entry.component';
 import { DateFnsModule } from 'ngx-date-fns';
+import { HealthAndSafetyModalComponent } from './health-and-safety-modal/health-and-safety-modal.component';
+import { AddNewHazardPopoverComponent } from './health-and-safety-modal/add-new-hazard-popover/add-new-hazard-popover.component';
+import { TempCheckComponent } from './temp-check/temp-check.component';
+import { VatSerialNumberComponent } from './vat-serial-number/vat-serial-number.component';
+import { SensorsComponent } from './sensors/sensors.component';
+import { PhotosModalComponent } from './photos-modal/photos-modal.component';
+import { JobSelectComponent } from './select-button/search-modal/job-select/job-select.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +27,13 @@ import { DateFnsModule } from 'ngx-date-fns';
     SelectButtonComponent,
     InfoModalComponent,
     ManualEntryComponent,
+    HealthAndSafetyModalComponent,
+    AddNewHazardPopoverComponent,
+    TempCheckComponent,
+    VatSerialNumberComponent,
+    SensorsComponent,
+    PhotosModalComponent,
+    JobSelectComponent,
     TimeAgoPipe
   ],
   imports: [
@@ -37,7 +51,14 @@ import { DateFnsModule } from 'ngx-date-fns';
     SearchModalComponent,
     SelectButtonComponent,
     ManualEntryComponent,
+    HealthAndSafetyModalComponent,
+    AddNewHazardPopoverComponent,
+    TempCheckComponent,
     InfoModalComponent,
+    VatSerialNumberComponent,
+    SensorsComponent,
+    PhotosModalComponent,
+    JobSelectComponent,
     DateFnsModule
   ]
 })

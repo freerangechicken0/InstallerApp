@@ -12,17 +12,14 @@
   <ion-refresher (ionRefresh)="doRefresh($event)" slot="fixed">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-  <ion-row *ngIf="!data">
+  <ion-row *ngIf="!data || !data.length || !lastBoot || !lastCell">
     <ion-col class="ion-text-center">
-        <ion-spinner name="crescent" color="secondary"></ion-spinner>
+      <ion-spinner name="crescent" color="secondary"></ion-spinner>
     </ion-col>
   </ion-row>
-  <ion-row *ngIf="data">
+  <ion-row *ngIf="data && data.length && lastBoot && lastCell">
     <ion-col>
       <ion-row>
-        <ion-button>
-          <p>What buttons?</p>
-        </ion-button>
         <ion-button (click)="rebootTransceiver()">
           <p>Reboot</p>
         </ion-button>
@@ -30,20 +27,65 @@
       <ion-row>
         <ion-col>
           <ion-text>
-            <p>Last Transceiver Check-in: </p>
-          </ion-text>
-        </ion-col>
-        <ion-col>
-          <ion-text>
-            <p *ngIf="lastTranCheckin === 'N/A'">{{lastTranCheckin}}</p>
-            <p *ngIf="lastTranCheckin !== 'N/A'">{{lastTranCheckin | timeAgo}}</p>
+            <p class="checkins">Transceiver Check-ins: </p>
           </ion-text>
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col>
+          <ion-row>
+            <ion-col>
+              <ion-text>
+                <p class="checkins">Check-in: </p>
+              </ion-text>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-text>
+                <p class="checkins">Boot: </p>
+              </ion-text>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-text>
+                <p class="checkins">Cell Strength: </p>
+              </ion-text>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+        <ion-col>
+          <ion-row>
+            <ion-col>
+              <ion-text>
+                <p *ngIf="lastTranCheckin === 'N/A'" class="checkins">{{lastTranCheckin}}</p>
+                <p *ngIf="lastTranCheckin !== 'N/A'" class="checkins">{{lastTranCheckin | timeAgo}}</p>
+              </ion-text>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-text>
+                <p *ngIf="lastBoot === 'N/A'" class="checkins">{{lastBoot}}</p>
+                <p *ngIf="lastBoot !== 'N/A'" class="checkins">{{lastBoot | timeAgo}}</p>
+              </ion-text>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-text>
+                <p *ngIf="lastCell === 'N/A'" class="checkins">{{lastCell}}</p>
+                <p *ngIf="lastCell !== 'N/A'" class="checkins">{{lastCellStrength}} {{lastCell | timeAgo}}</p>
+              </ion-text>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
           <ion-text>
-            <p class="sensor-checkin">Last Sensor Check-ins:</p>
+            <p class="checkins">Sensor Check-ins:</p>
           </ion-text>
         </ion-col>
       </ion-row>
@@ -52,38 +94,38 @@
           <ion-row *ngFor="let sensor of transceiver.sensors">
             <ion-col>
               <ion-text>
-                <p class="sensor-checkin">{{sensor.serialNumber}}: </p>
+                <p class="checkins">{{sensor.serialNumber}}: </p>
               </ion-text>
             </ion-col>
           </ion-row>
         </ion-col>
-        <ion-col>
+        <ion-col class="checkins">
           <ion-row *ngFor="let date of lastCheckins">
             <ion-col>
               <ion-text>
-                <p *ngIf="date === 'N/A'" class="sensor-checkin">{{date}}</p>
-                <p *ngIf="date !== 'N/A'" class="sensor-checkin">{{date | timeAgo}}</p>
+                <p *ngIf="date === 'N/A'" class="checkins">{{date}}</p>
+                <p *ngIf="date !== 'N/A'" class="checkins">{{date | timeAgo}}</p>
               </ion-text>
             </ion-col>
           </ion-row>
         </ion-col>
       </ion-row>
 
-      <ion-row class="ion-justify-content-center">
-        <ion-col size-xs="12" size-md="8" size-lg="6">
+      <ion-row class="ion-justify-content-left">
+        <ion-col size="12">
           <p class="last-updated">
             Pull screen down to refresh. Updated {{lastUpdated | dfnsFormat:'d MMM HH:mm:ss'}}
           </p>
         </ion-col>
       </ion-row>
-      
+
       <ion-row>
         <p>Data:</p>
       </ion-row>
       <ion-row>
         <ion-col>
           <ion-list>
-            <ion-card *ngFor="let entry of data; let i = index" [ngClass]="{'odd': i % 2 !== 0}" class="card">
+            <ion-card *ngFor="let entry of loadedData; let i = index" [ngClass]="{'odd': i % 2 !== 0}" class="card">
               <ion-card-header>
                 <ion-row>
                   <ion-col size="7">
@@ -91,13 +133,18 @@
                     <p>{{entry.date | timeAgo}}</p>
                   </ion-col>
                   <ion-col class="ion-float-right readings" size="3">
-                    <h4 *ngIf="findSensorType(entry.topic) === 'vatTemp' || findSensorType(entry.topic) === 'inletTemp'" class="ion-text-right">{{(entry.data.val / 6) | number:'2.0-1'}}°C</h4>
-                    <h4 *ngIf="findSensorType(entry.topic) === 'stirrer' && entry.data.val" class="ion-text-right">On</h4>
-                    <h4 *ngIf="findSensorType(entry.topic) === 'stirrer' && !entry.data.val" class="ion-text-right">Off</h4>
-                    <h4 *ngIf="findSensorType(entry.topic) === 'lidarDistance'" class="ion-text-right">{{entry.data.val}}mm</h4>
+                    <h4 *ngIf="findSensorType(entry.topic) === 'vatTemp' || findSensorType(entry.topic) === 'inletTemp'"
+                      class="ion-text-right">{{(entry.data.val / 16) | number:'1.0-1'}}°C</h4>
+                    <h4 *ngIf="findSensorType(entry.topic) === 'stirrer' && entry.data.val" class="ion-text-right">On
+                    </h4>
+                    <h4 *ngIf="findSensorType(entry.topic) === 'stirrer' && !entry.data.val" class="ion-text-right">Off
+                    </h4>
+                    <h4 *ngIf="findSensorType(entry.topic) === 'lidarDistance'" class="ion-text-right">
+                      {{entry.data.val / 1000 | number:'1.0-1'}}m</h4>
                   </ion-col>
                   <ion-col class="ion-float-right" size="2">
-                    <img *ngIf="findSensorType(entry.topic)" [src]="'../../../assets/svgs/' + findSensorType(entry.topic) + '.svg'" class="icon">
+                    <ion-icon *ngIf="findSensorType(entry.topic)"
+                      [src]="'../../../assets/svgs/' + findSensorType(entry.topic) + '.svg'" class="icon {{findSensorType(entry.topic)}}"></ion-icon>
                   </ion-col>
                 </ion-row>
               </ion-card-header>
@@ -115,6 +162,10 @@
               </ion-card-content>
             </ion-card>
           </ion-list>
+          <ion-infinite-scroll threshold="50%" (ionInfinite)="doInfinite($event)">
+            <ion-infinite-scroll-content loadingSpinner="crescent" class="loadingSpinner">
+            </ion-infinite-scroll-content>
+          </ion-infinite-scroll>
         </ion-col>
       </ion-row>
     </ion-col>

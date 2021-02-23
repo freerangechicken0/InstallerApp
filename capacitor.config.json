@@ -1,12 +1,12 @@
 {
-  "appId": "io.ionic.starter",
-  "appName": "installer-ui-ionic",
+  "appId": "com.app.levno.installer",
+  "appName": "Levno Installer",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "www",
   "plugins": {
     "SplashScreen": {
-      "launchShowDuration": 0
+      "launchShowDuration": 3000
     }
   },
   "cordova": {}

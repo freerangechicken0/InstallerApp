@@ -1,7 +1,7 @@
 <app-org-header title="Milk Install"></app-org-header>
 
 <ion-toolbar color="primary" class="top">
-  <app-select-button (objectSelected)="productSelected($event)" type="Product" [objects]="products"
+  <app-select-button #productSearch (objectSelected)="productSelected($event)" type="Product"
     [selectedObject]="selectedProduct" [info]=false>
   </app-select-button>
 
@@ -17,7 +17,7 @@
           <ion-col class="ion-justify-content-center ion-text-center">
             <p class="ion-margin-top">Vat {{currentVatIndex + 1}}</p>
           </ion-col>
-          <ion-col *ngIf="nVats > 1" size="3" size-xs="3" size-sm="3">
+          <ion-col *ngIf="nVats > 1" size="3">
             <ion-segment-button mode="md" [value]="currentVatIndex + 1" (click)="goForward()"
               class="side-navigate-button">
               <ion-icon name="chevron-forward" color="secondary" class="ion-align-self-end"></ion-icon>
@@ -35,51 +35,82 @@
   </ion-refresher>
   <ion-row class="ion-no-padding ion-justify-content-center">
     <ion-col class="ion-no-padding" size-xs="12" size-md="8" size-lg="6">
-      <ion-row *ngIf="selectedProduct !== null && this.vat">
-        <ion-col size="7">
-          <ion-card>
-            <ion-card-content>
-              <ion-row class="ion-no-padding">
-                <ion-col class="ion-no-padding" size="auto">
-                  <ion-label>Vat Type: </ion-label>
-                </ion-col>
-                <ion-col class="ion-no-padding">
-                  <ion-select interface="popover" class="ion-no-padding" [value]="vat.formula" placeholder="empty"
-                    (ionChange)="vatTypeSelected($event)">
-                    <ion-select-option *ngFor="let option of options" [value]="option.value">{{option.text}}
-                    </ion-select-option>
-                  </ion-select>
-                </ion-col>
-                <ion-col size="1" class="ion-no-padding">
-                  <ion-icon name="chevron-down" color="secondary" class="ion-float-right icon"></ion-icon>
-                </ion-col>
-              </ion-row>
-            </ion-card-content>
-          </ion-card>
-        </ion-col>
-        <ion-col size="5">
-          <ion-card>
-            <ion-card-content>
-              <ion-row class="ion-no-padding">
-                <ion-col class="ion-no-padding" size="auto">
-                  <ion-label>Vat Size: </ion-label>
-                </ion-col>
-                <ion-col class="ion-no-padding">
-                  <ion-select interface="popover" class="ion-no-padding" [value]="vat.sizeString" placeholder="empty"
-                    (ionChange)="vatSizeSelected($event)">
-                    <ion-select-option *ngFor="let size of optionSizes[vat.formula]" [value]="size.value">{{size.text}}
-                    </ion-select-option>
-                    <ion-select-option [value]="null">None</ion-select-option>
-                  </ion-select>
-                </ion-col>
-                <ion-col size="1" class="ion-no-padding">
-                  <ion-icon name="chevron-down" color="secondary" class="ion-float-right icon"></ion-icon>
-                </ion-col>
-              </ion-row>
-            </ion-card-content>
-          </ion-card>
-        </ion-col>
-      </ion-row>
+      <ng-container *ngIf="selectedProduct !== null && this.vat">
+        <ion-row>
+          <ion-col>
+            <ion-card #top>
+              <ion-card-content class="ion-no-padding">
+                <ion-row class="ion-no-padding">
+                  <ion-col class="ion-no-padding" size="4">
+                    <ion-item button lines="none" class="white-input ion-no-padding" (click)="openVatSerial()">
+                      <ion-label *ngIf="vatSerialNumbers[currentVatIndex]">{{vatSerialNumbers[currentVatIndex]}}
+                      </ion-label>
+                      <ion-label *ngIf="!vatSerialNumbers[currentVatIndex]" class="placeholder">Serial Number
+                      </ion-label>
+                    </ion-item>
+                  </ion-col>
+                  <div class="verticalLine"></div>
+                  <ion-col class="ion-no-padding" size="4">
+                    <ion-item button lines="none" class="white-input ion-no-padding" (click)="openTempCheck('Pre')">
+                      <ion-label *ngIf="preTempChecks[currentVatIndex]">
+                        <ng-container *ngIf="preTempChecks[currentVatIndex].empty">Empty</ng-container>
+                        <ng-container *ngIf="!preTempChecks[currentVatIndex].empty">Pre:
+                          {{preTempChecks[currentVatIndex].temperature}}°C</ng-container>
+                      </ion-label>
+                      <ion-label *ngIf="!preTempChecks[currentVatIndex]" class="placeholder">Pre Temp</ion-label>
+                    </ion-item>
+                  </ion-col>
+                  <div class="verticalLine"></div>
+                  <ion-col class="ion-no-padding">
+                    <ion-item button lines="none" class="white-input ion-no-padding" (click)="openTempCheck('Post')">
+                      <ion-label *ngIf="postTempChecks[currentVatIndex]">
+                        <ng-container *ngIf="postTempChecks[currentVatIndex].empty">Empty</ng-container>
+                        <ng-container *ngIf="!postTempChecks[currentVatIndex].empty">Post:
+                          {{postTempChecks[currentVatIndex].temperature}}°C</ng-container>
+                      </ion-label>
+                      <ion-label *ngIf="!postTempChecks[currentVatIndex]" class="placeholder">Post Temp</ion-label>
+                    </ion-item>
+                  </ion-col>
+                </ion-row>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-card>
+              <ion-card-content class="ion-no-padding">
+                <ion-row class="ion-no-padding">
+                  <ion-col class="ion-no-padding" size="6">
+                    <ion-item lines="none" class="white-input ion-no-padding">
+                      <ion-select interface="popover" class="ion-no-padding" [value]="vat.formula"
+                        placeholder="Vat Type:" (ionChange)="vatTypeSelected($event)">
+                        <ion-select-option *ngFor="let option of options" [value]="option.value">{{option.text}}
+                        </ion-select-option>
+                      </ion-select>
+                      <ion-icon slot="end" name="chevron-down" color="secondary" class="icon"></ion-icon>
+                    </ion-item>
+                  </ion-col>
+                  <div class="verticalLine"></div>
+                  <ion-col class="ion-no-padding">
+                    <ion-item lines="none" class="white-input ion-no-padding">
+                      <ion-select interface="popover" class="ion-no-padding" [value]="''+vat.sizeString"
+                        placeholder="Vat Size:" (ionChange)="vatSizeSelected($event)">
+                        <ion-select-option *ngFor="let size of optionSizes[vat.formula]" [value]="size.value">
+                          {{size.text}}
+                        </ion-select-option>
+                        <ion-select-option [value]="null">None</ion-select-option>
+                      </ion-select>
+                      <ion-icon slot="end" name="chevron-down" color="secondary" class="ion-float-right icon">
+                      </ion-icon>
+                    </ion-item>
+                  </ion-col>
+                </ion-row>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+      </ng-container>
     </ion-col>
   </ion-row>
 
@@ -101,42 +132,55 @@
     </ion-col>
   </ion-row> -->
 
-
-  <app-select-button (objectSelected)="transceiverSelected($event)" type="Transceiver" [objects]="transceivers"
-    [selectedObject]="selectedTransceiver" [info]=true>
+  <app-select-button #transceiverSearch (objectSelected)="transceiverSelected(currentVatIndex, $event)"
+    type="Transceiver" [selectedObject]="selectedTransceivers[currentVatIndex]" [info]=true>
   </app-select-button>
 
-  <app-sensors *ngIf="selectedTransceiver !== null" [sensors]="selectedTransceiver.sensors" [qrSensors]="qrSensors"
-    [transceiverId]="selectedTransceiver.serialNumber" [vat]="vat">
+  <app-sensors *ngIf="selectedTransceivers[currentVatIndex]" [sensors]="selectedTransceivers[currentVatIndex].sensors"
+    [qrSensors]="qrSensors" [transceiverSerialNumber]="selectedTransceivers[currentVatIndex].serialNumber" [vat]="vat"
+    [currentVatIndex]="currentVatIndex" [lowerScrollLimit]="ionContnentRef?.nativeElement.getBoundingClientRect().top"
+    [upperScrollLimit]="ionContnentRef?.nativeElement.getBoundingClientRect().bottom" [top]="topRef"
+    [tranSearch]="tranSearchRef" [bottom]="bottomRef" (emitScroll)="scroll($event)">
   </app-sensors>
 
   <ion-row class="ion-justify-content-center">
     <ion-col size-xs="12" size-md="8" size-lg="6">
       <ion-row>
         <ion-col>
-          <p class="last-updated">
-            Pull screen down to refresh. Updated {{lastUpdated | dfnsFormat:'d MMM HH:mm:ss'}}
+          <p #bottom class="last-updated">
+            Pull screen down to refresh transceivers.
+            <br>
+            Updated {{lastUpdated | dfnsFormat:'d MMM HH:mm:ss'}}
           </p>
         </ion-col>
       </ion-row>
     </ion-col>
   </ion-row>
 
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button [disabled]="selectedProduct === null || selectedTransceiver === null">
+  <ion-backdrop [ngClass]="{'backdropOpen' : backdrop}" class="backdrop" (ionBackdropTap)="backdropClicked(fab)">
+  </ion-backdrop>
+
+  <ion-fab #fab vertical="bottom" horizontal="end" slot="fixed" (click)="fabClicked()">
+    <ion-fab-button [disabled]="selectedProduct === null || selectedTransceivers[currentVatIndex] === null">
       <ion-icon name="ellipsis-horizontal" color="secondary"></ion-icon>
     </ion-fab-button>
     <ion-fab-list side="top">
-      <ion-fab-button color="primary" (click)="openBar()">
+      <ion-fab-button color="primary" (click)="openHealthAndSafety()" data-desc="H&S">
+        <ion-icon name="document-text-outline"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button [disabled]="!platform.is('cordova')" color="primary" (click)="openBar()" data-desc="Scan">
         <ion-icon name="qr-code-outline"></ion-icon>
       </ion-fab-button>
-      <ion-fab-button color="primary" (click)="openManual()">
+      <ion-fab-button color="primary" (click)="openManual()" data-desc="Add">
         <ion-icon name="create-outline"></ion-icon>
       </ion-fab-button>
-      <ion-fab-button color="primary" (click)="mergeSensors()">
+      <ion-fab-button color="primary" (click)="mergeSensors()" data-desc="Merge">
         <ion-icon name="git-pull-request-outline"></ion-icon>
       </ion-fab-button>
-      <ion-fab-button color="primary" (click)="submit()">
+      <ion-fab-button color="primary" (click)="openPhotos()" data-desc="Photos">
+        <ion-icon name="camera-outline"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button color="primary" (click)="submit()" data-desc="Submit">
         <ion-icon name="checkmark"></ion-icon>
       </ion-fab-button>
     </ion-fab-list>

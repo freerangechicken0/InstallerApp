@@ -5,23 +5,23 @@
         <ion-card>
           <ion-card-content class="ion-no-padding">
             <ion-row class="ion-no-padding">
-              <ion-col class="padding ion-padding-horizontal clickable ion-activatable ripple-parent">
+              <ion-col class="padding ion-padding-horizontal clickable ion-activatable ripple-parent" (click)="openObjectSearch()">
                 <ion-ripple-effect></ion-ripple-effect>
-                <ion-row class="ion-no-padding" (click)="openObjectSearch()">
-                  <ion-col class="ion-no-padding">
-                    <ng-container *ngIf="selectedObject !== null">
+                <ion-row class="ion-no-padding">
+                  <ion-col class="ion-no-padding" size="11">
+                    <ng-container *ngIf="selectedObject">
                       <p *ngIf="type === 'Transceiver'" class="ion-no-padding">{{type}}:
                         {{selectedObject.serialNumber}}</p>
                       <p *ngIf="type === 'Product'" class="ion-no-padding">{{selectedObject.name}}</p>
                     </ng-container>
-                    <p *ngIf="selectedObject === null" class="ion-no-padding">Select {{type}}:</p>
+                    <p *ngIf="!selectedObject" class="ion-no-padding">Select {{type}}:</p>
                   </ion-col>
                   <ion-col class="ion-no-padding" size="1">
                     <ion-icon name="chevron-down" color="secondary" class="ion-float-right icon"></ion-icon>
                   </ion-col>
                 </ion-row>
               </ion-col>
-              <ion-col *ngIf="info && selectedObject !== null"
+              <ion-col *ngIf="info && selectedObject"
                 class="ion-text-center padding clickable ion-activatable ripple-parent greyBackground" size="1"
                 (click)="openInfoModal()">
                 <ion-ripple-effect></ion-ripple-effect>

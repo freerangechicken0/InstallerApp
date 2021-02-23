@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar color="primary" class="ion-justify-content-center ion-text-center">
+    <ion-title>Vat {{vatIndex + 1}} {{type}} Temp</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="greyBackground">
+  <ion-row>
+    <ion-col>
+      <ion-label>Is this vat empty?</ion-label>
+      <ion-checkbox color="secondary" [checked]="empty" (ionChange)="emptyChange($event)"></ion-checkbox>
+    </ion-col>
+  </ion-row>
+  <ion-row class="ion-justify-content-center">
+    <ion-col class="ion-align-content-center">
+      <ion-label>Temperature</ion-label>
+      <ion-input placeholder="Empty" type="number" [value]="temperature" [disabled]="empty"
+        (ionChange)="inputChange($event)"></ion-input>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col *ngIf="allowCancel">
+      <ion-card button (click)="cancel()">
+        <ion-card-content>
+          <p>Cancel</p>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+    <ion-col size="6">
+      <ion-card button (click)="confirm()">
+        <ion-card-content>
+          <p>Confirm</p>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+</ion-content>

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthenticationService } from '../../core/_services/authentication.service';
+import { MenuController } from '@ionic/angular';
+import { MixpanelService } from 'src/app/core/_services/mixpanel.service';
 
 @Component({
     selector: 'app-login',
@@ -26,7 +28,13 @@ export class LoginPage implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private authenticationService: AuthenticationService,
+        private menuController: MenuController,
+        private mixpanelService: MixpanelService
     ) {
+    }
+
+    ionViewWillEnter() {
+        this.menuController.enable(false);
     }
 
     ngOnInit() {
@@ -73,6 +81,7 @@ export class LoginPage implements OnInit {
                 // this.router.navigateByUrl(this.returnUrl);
                 this.error = null;
                 this.loading = false;
+                this.mixpanelService.trackEvent("Logged in");
                 this.router.navigate(['/home']);
             }, error => {
                 this.error = error.error.error;

@@ -1,0 +1,88 @@
+<ion-row class="ion-justify-content-center">
+  <ion-col size-xs="12" size-md="8" size-lg="6">
+    <ion-row class="ion-align-items-left">
+      <ion-col class="ion-no-padding">
+        <ion-row class="dropArea ion-text-center">
+          <ion-col size-xs="6" size-md="4" size-lg="3">
+            <app-tile #lidarDropzone type="lidarDistance"
+              [serialNumber]="lidarSensors[currentVatIndex]?.sensor.serialNumber"
+              (click)="lidarSensors[currentVatIndex] ? showSensorSelect(lidarSensors[currentVatIndex].sensor) : null"
+              [scanned]="lidarSensors[currentVatIndex]?.scanned" (sensorRemoved)="removeSensor($event)"></app-tile>
+          </ion-col>
+          <ion-col size-xs="6" size-md="4" size-lg="3">
+            <app-tile #stirrerDropzone type="stirrer"
+              [serialNumber]="stirrerSensors[currentVatIndex]?.sensor.serialNumber"
+              (click)="stirrerSensors[currentVatIndex] ? showSensorSelect(stirrerSensors[currentVatIndex].sensor) : null"
+              [scanned]="stirrerSensors[currentVatIndex]?.scanned" (sensorRemoved)="removeSensor($event)"></app-tile>
+          </ion-col>
+          <ion-col size-xs="6" size-md="4" size-lg="3">
+            <app-tile #vatTempDropzone type="vatTemp"
+              [serialNumber]="vatTempSensors[currentVatIndex]?.sensor.serialNumber"
+              (click)="vatTempSensors[currentVatIndex] ? showSensorSelect(vatTempSensors[currentVatIndex].sensor) : null"
+              [scanned]="vatTempSensors[currentVatIndex]?.scanned" (sensorRemoved)="removeSensor($event)"></app-tile>
+          </ion-col>
+          <ion-col size-xs="6" size-md="4" size-lg="3">
+            <app-tile #inletTempDropzone type="inletTemp"
+              [serialNumber]="inletTempSensors[currentVatIndex]?.sensor.serialNumber"
+              (click)="inletTempSensors[currentVatIndex] ? showSensorSelect(inletTempSensors[currentVatIndex].sensor) : null"
+              [scanned]="inletTempSensors[currentVatIndex]?.scanned" (sensorRemoved)="removeSensor($event)"></app-tile>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <h3>Sensors</h3>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ng-container *ngFor="let sensor of sensors, let i = index">
+            <ion-col
+              *ngIf="(!vat || !sensor.vatId || sensor.vatId === vat.id) && sensor !== lidarSensors[currentVatIndex]?.sensor && sensor !== stirrerSensors[currentVatIndex]?.sensor && sensor !== vatTempSensors[currentVatIndex]?.sensor && sensor !== inletTempSensors[currentVatIndex]?.sensor"
+              size="6">
+              <ion-card id="{{i}}" #aSensor>
+                <ion-card-content>
+                  <ion-row class="ion-no-padding">
+                    <ion-col class="ion-no-padding" size="11">
+                      <p>{{sensor.serialNumber}}</p>
+                    </ion-col>
+                    <ion-col class="ion-no-padding" size="1">
+                      <ion-icon *ngIf="sensor.type" [src]="'../../../assets/svgs/' + sensor.type + '.svg'" class="{{sensor.type}} icon"></ion-icon>
+                    </ion-col>
+                  </ion-row>
+                </ion-card-content>
+              </ion-card>
+            </ion-col>
+          </ng-container>
+        </ion-row>
+        <ion-row *ngIf="qrSensors.length">
+          <ion-col>
+            <h4>Scanned sensors</h4>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ng-container *ngFor="let sensor of qrSensors, let i = index">
+            <ion-col
+              *ngIf="(!sensor.vatId || sensor.vatId === vat.id) && sensor !== lidarSensors[currentVatIndex]?.sensor && sensor !== stirrerSensors[currentVatIndex]?.sensor && sensor !== vatTempSensors[currentVatIndex]?.sensor && sensor !== inletTempSensors[currentVatIndex]?.sensor"
+              size="6">
+              <ion-card id="{{i}}" #aScannedSensor>
+                <ion-card-content class="ion-no-padding">
+                  <ion-row class="ion-no-padding">
+                    <ion-col class="ion-no-padding" size="11">
+                      <p class="customPadding">{{sensor.serialNumber}}</p>
+                    </ion-col>
+                    <ion-col class="ion-no-padding" size="1">
+                      <ion-button class="ion-no-padding ion-float-right ion-no-margin" fill="clear" size="small"
+                        (click)="deleteQrSensor(sensor.serialNumber)">
+                        <ion-icon name="close" color="black"></ion-icon>
+                      </ion-button>
+                    </ion-col>
+                  </ion-row>
+                </ion-card-content>
+              </ion-card>
+            </ion-col>
+          </ng-container>
+        </ion-row>
+        <p *ngIf="!sensors.length && !qrSensors.length">This transceiver has no sensors</p>
+      </ion-col>
+    </ion-row>
+  </ion-col>
+</ion-row>

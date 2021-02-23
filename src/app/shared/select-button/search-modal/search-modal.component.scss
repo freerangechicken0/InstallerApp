@@ -1,3 +1,8 @@
 .loadingSpinner {
     --color: var(--ion-color-secondary);
 }
+
+ion-title {
+    opacity: 0.8;
+    padding-top: 10px;
+}

@@ -8,8 +8,8 @@ import { Components } from '@ionic/core';
 })
 export class SensorSelectComponent implements OnInit {
   @Input() popover: Components.IonPopover;
-  @Input() transceiverId: string;
-  @Input() sensorId: string;
+  @Input() transceiverSerialNumber: string;
+  @Input() sensorSerialNumber: string;
   @Input() assignment: string;
   @Input() sensorOptions: string[][];
   public selection: string;
@@ -17,7 +17,9 @@ export class SensorSelectComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.selection = this.assignment;
+  }
 
   radioGroupChange(event) {
     this.selection = event.detail.value;

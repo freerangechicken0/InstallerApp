@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Observable, pipe } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
+import { User } from '../_models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -9,42 +10,49 @@ import { HttpClient } from '@angular/common/http';
 export class AuthenticationService {
   private baseUrl = 'https://api.uat.milk.levno.com/api/';
   private token: string;
-  private expiresIn: number;
+  private expiresAt: number;
+  public user: BehaviorSubject<User> = new BehaviorSubject(null);
 
   constructor(
     private httpClient: HttpClient
   ) {
-    //&& localStorage.getItem('expiresIn') < Date.now
-    if (localStorage.getItem('token')) {
-      this.token = localStorage.getItem('token');
-      this.expiresIn = +localStorage.getItem('expiresIn');
-    }
-   }
-
-  public login(email: string, password: string): Observable<{authType: string, expiresIn: number, token: string}> {
-    return this.httpClient.post<{authType: string, expiresIn: number, token: string}>(this.baseUrl + 'auth/login', {email, password})
-    .pipe(tap((loginResponse) => {
-      localStorage.setItem('token', loginResponse.token)
-      localStorage.setItem('expiresIn', loginResponse.expiresIn.toString())
-      this.token = loginResponse.token;
-      this.expiresIn = loginResponse.expiresIn;
-    }));
+    this.token = localStorage.getItem('token') || '';
+    this.expiresAt = +localStorage.getItem('expiresAt') || 0;
   }
 
-  public logout(): Observable<{msg: string}> {
-    return this.httpClient.post<{msg: string}>(this.baseUrl + 'auth/logout', {})
-      .pipe(tap((logoutResponse) => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('expiresIn');
+  public login(email: string, password: string): Observable<{ authType: string, expiresIn: number, token: string }> {
+    return this.httpClient.post<{ authType: string, expiresIn: number, token: string }>(this.baseUrl + 'auth/login', { email, password })
+      .pipe(tap((loginResponse) => {
+        this.token = loginResponse.token;
+        this.expiresAt = +loginResponse.expiresIn + Math.floor(Date.now() / 1000);
+        localStorage.setItem('token', this.token);
+        localStorage.setItem('expiresAt', this.expiresAt.toString());
       }));
   }
 
+  public logout(): void {
+    this.httpClient.post<{ msg: string }>(this.baseUrl + 'auth/logout', {}).subscribe(() => {
+      localStorage.removeItem('token');
+      localStorage.removeItem('expiresAt');
+      this.user.next(null);
+    });
+  }
+
   public getToken(): string {
-    return this.token
+    if (this.expiresAt < Math.floor(Date.now() / 1000)) {
+      this.token = '';
+      this.expiresAt = 0;
+    }
+    return this.token;
   }
 
-  public getExpiresIn(): number {
-    return this.expiresIn;
+  public getExpiresAt(): number {
+    return this.expiresAt;
   }
 
+  public getUser(): void {
+    this.httpClient.get<{ data: User }>(this.baseUrl + 'auth/user').subscribe((user) => {
+      this.user.next(user.data);
+    });
+  }
 }

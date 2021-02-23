@@ -12,7 +12,6 @@ import { InfoModalComponent } from '../info-modal/info-modal.component';
 })
 export class SelectButtonComponent implements OnInit {
   @Input() type: string;
-  @Input() objects: Transceiver[] | Product[];
   @Input() selectedObject: Transceiver | Product;
   @Input() info: boolean;
   @Output() objectSelected: EventEmitter<any> = new EventEmitter();
@@ -23,19 +22,18 @@ export class SelectButtonComponent implements OnInit {
 
   ngOnInit() { }
 
-  async openObjectSearch() {
+  public async openObjectSearch() {
     const modal = await this.modalController.create({
       component: SearchModalComponent,
       componentProps: {
-        type: this.type,
-        objects: this.objects
+        type: this.type
       },
       mode: 'md'
     });
 
     modal.onDidDismiss()
       .then((data) => {
-        if (data.data !== undefined) {
+        if (data?.data) {
           this.selectedObject = data.data;
           this.objectSelected.emit(this.selectedObject);
         }
@@ -44,7 +42,7 @@ export class SelectButtonComponent implements OnInit {
     return await modal.present();
   }
 
-  async openInfoModal() {
+  public async openInfoModal() {
     const modal = await this.modalController.create({
       component: InfoModalComponent,
       componentProps: {

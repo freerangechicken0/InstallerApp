@@ -10,8 +10,6 @@ import { AssignPageRoutingModule } from './assign-routing.module';
 
 import { AssignPage } from './assign.page';
 
-import { SensorsComponent } from './sensors/sensors.component';
-
 @NgModule({
   imports: [
     CommonModule,
@@ -21,8 +19,7 @@ import { SensorsComponent } from './sensors/sensors.component';
     AssignPageRoutingModule
   ],
   declarations: [
-    AssignPage,
-    SensorsComponent
+    AssignPage
   ]
 })
 export class AssignPageModule {}

@@ -1,0 +1,18 @@
+.mainRow {
+    height: 100%;
+}
+
+.cameraPlaceholder {
+    height: calc(100% - (216px + 58px));
+}
+
+ion-button {
+    width: 100%;
+}
+
+.vatSwitcher {
+    height: 48px;
+    ion-segment {
+        height: 48px;
+    }
+}

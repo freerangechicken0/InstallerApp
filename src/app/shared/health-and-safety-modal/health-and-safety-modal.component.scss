@@ -1,0 +1,62 @@
+ion-title {
+  opacity: 0.8;
+}
+
+.title {
+  font-size: 20px;
+}
+
+ion-list {
+  padding-bottom: 10px;
+}
+
+ion-item-sliding,
+ion-item-options,
+.addNewHazard {
+  padding-bottom: 10px;
+}
+
+.hazardLine {
+  border-style: none none solid none;
+  border-color: var(--ion-color-grey-background);
+}
+
+ion-card-content {
+  padding-bottom: 0;
+}
+
+.signature-card {
+  ion-card-content {
+    padding: 5px 0 0 0;
+  }
+}
+
+.signature-pad {
+  border-style: solid none;
+  // border-color: rgb(177, 177, 177);
+  border-color: var(--ion-color-grey-background);
+}
+
+.signatureButton {
+  width: 50%;
+}
+
+.iconCol {
+  max-height: 32px;
+}
+
+ion-badge {
+  color: black;
+}
+
+.Eliminate {
+  background-color: rgba(255, 0, 0, 0.5);
+}
+
+.Isolate {
+  background-color: rgb(255, 166, 0, 0.5);
+}
+
+.Minimise {
+  background-color: rgb(255, 255, 0, 0.5)
+}

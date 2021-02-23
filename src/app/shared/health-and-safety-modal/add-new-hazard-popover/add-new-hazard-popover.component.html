@@ -1,0 +1,67 @@
+<ion-header>
+  <ion-toolbar color="primary" class="ion-justify-content-center ion-text-center">
+    <ion-title>Add a new hazard</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="greyBackground">
+  <ion-row class="ion-justify-content-center">
+    <ion-col class="ion-align-content-center">
+      <ion-label>Hazard</ion-label>
+      <ion-input placeholder="Empty" [value]="name" (ionChange)="hazardChange($event)"></ion-input>
+    </ion-col>
+  </ion-row>
+  <ion-row class="ion-justify-content-center">
+    <ion-col class="ion-align-content-center">
+      <ion-label>Action</ion-label>
+      <ion-select interface="popover" class="ion-no-padding" [value]="action" placeholder="Empty" (ionChange)="actionChange($event)">
+        <ion-select-option *ngFor="let option of ACTIONS" [value]="option">{{option}}</ion-select-option>
+      </ion-select>
+    </ion-col>
+  </ion-row>
+  <ion-row class="ion-justify-content-center">
+    <ion-col class="ion-align-content-center">
+      <ion-label>Risk</ion-label>
+      <ion-input placeholder="Empty" [value]="risk" (ionChange)="riskChange($event)"></ion-input>
+    </ion-col>
+  </ion-row>
+  <ion-row class="ion-justify-content-center">
+    <ion-col class="ion-align-content-center">
+      <ion-label>
+        <ion-row>
+          <ion-col class="ion-no-padding" size="10">
+            Controls
+          </ion-col>
+          <ion-col class="ion-no-padding" size="2" (click)="newControl()">
+            <ion-icon name="add-circle" color="secondary"></ion-icon>
+          </ion-col>
+        </ion-row>
+      </ion-label>
+      <ng-container *ngFor="let dummyControl of numOfControls, let i = index">
+        <ion-row>
+          <ion-col class="ion-no-padding" size="10">
+            <ion-input placeholder="Empty" [value]="controls[i]" (ionChange)="controlsChange($event, i)"></ion-input>
+          </ion-col>
+          <ion-col class="ion-no-padding" size="2" (click)="deleteControl(i)">
+            <ion-icon class="cross" name="close-outline"></ion-icon>
+          </ion-col>
+        </ion-row>
+      </ng-container>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-card button (click)="cancel()">
+        <ion-card-content>
+          <p>Cancel</p>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+    <ion-col>
+      <ion-card button (click)="confirm()">
+        <ion-card-content>
+          <p>Confirm</p>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+</ion-content>

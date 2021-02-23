@@ -1,0 +1,169 @@
+<ion-header>
+  <ion-toolbar color="primary" class="white-text" mode="md">
+    <ion-buttons slot="start">
+      <ion-button (click)="onClose()" type="button" class="primary-action" size="large" color="primary" fill="solid">
+        <ion-icon name="arrow-back" color="secondary"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Health and Safety</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="greyBackground">
+  <ion-row class="ion-no-padding ion-justify-content-center">
+    <ion-col class="ion-no-padding">
+      <h1 class="ion-padding-horizontal">{{productName}}:</h1>
+      <p class="ion-padding-horizontal">Swipe each hazard to either side to identify whether it is a hazard on this job
+        or not.</p>
+      <ion-list lines="none">
+        <ng-container *ngFor="let hazard of hazards">
+          <ion-item-sliding>
+            <ion-item-options side="start" (ionSwipe)="yes($event.target.parentElement, hazard)">
+              <ion-item-option color="success" (click)="yes($event.target.parentElement.parentElement, hazard)">
+                Yes
+              </ion-item-option>
+            </ion-item-options>
+
+            <ion-item (click)="toggle(hazard)">
+              <ion-label class="ion-text-wrap ion-no-margin">
+                <ion-card>
+                  <ion-card-header>
+                    <ion-row>
+                      <ion-col class="ion-no-padding" size="11">
+                        <ion-card-title class="title">{{hazard.name}}</ion-card-title>
+                      </ion-col>
+                      <ion-col *ngIf="hazard.identified === 'yes'" size="1" class="ion-no-padding iconCol">
+                        <ion-icon name="checkmark-circle" color="success" size="large"></ion-icon>
+                      </ion-col>
+                      <ion-col *ngIf="hazard.identified === 'no'" size="1" class="ion-no-padding iconCol">
+                        <ion-icon name="close-circle" color="danger" size="large"></ion-icon>
+                      </ion-col>
+                    </ion-row>
+                  </ion-card-header>
+                  <ion-card-content *ngIf="hazard.open">
+                    <ion-row>
+                      <ion-badge class="{{hazard.action}}">{{hazard.action}}</ion-badge>
+                    </ion-row>
+                    <ion-row class="hazardLine">
+                      <p>{{hazard.risk}}</p>
+                    </ion-row>
+                    <ion-row>
+                      <ul>
+                        <li *ngFor="let control of hazard.controls">
+                          {{control}}
+                        </li>
+                      </ul>
+                    </ion-row>
+                  </ion-card-content>
+                </ion-card>
+              </ion-label>
+            </ion-item>
+
+            <ion-item-options side="end" (ionSwipe)="no($event.target.parentElement, hazard)">
+              <ion-item-option color="danger" (click)="no($event.target.parentElement.parentElement, hazard)">
+                No
+              </ion-item-option>
+            </ion-item-options>
+          </ion-item-sliding>
+        </ng-container>
+
+        <!-- this is bad i know i didnt have the time to make a custom component -->
+        <ng-container *ngFor="let hazard of customHazards">
+          <ion-item-sliding>
+            <ion-item-options side="start" (ionSwipe)="yes($event.target.parentElement, hazard)">
+              <ion-item-option color="success" (click)="yes($event.target.parentElement.parentElement, hazard)">
+                Yes
+              </ion-item-option>
+            </ion-item-options>
+
+            <ion-item (click)="toggle(hazard)">
+              <ion-label class="ion-text-wrap ion-no-margin">
+                <ion-card>
+                  <ion-card-header>
+                    <ion-row>
+                      <ion-col class="ion-no-padding" size="11">
+                        <ion-card-title class="title">{{hazard.name}}</ion-card-title>
+                      </ion-col>
+                      <ion-col *ngIf="hazard.identified === 'yes'" size="1" class="ion-no-padding iconCol">
+                        <ion-icon name="checkmark-circle" color="success" size="large"></ion-icon>
+                      </ion-col>
+                      <ion-col *ngIf="hazard.identified === 'no'" size="1" class="ion-no-padding iconCol">
+                        <ion-icon name="close-circle" color="danger" size="large"></ion-icon>
+                      </ion-col>
+                    </ion-row>
+                  </ion-card-header>
+                  <ion-card-content *ngIf="hazard.open">
+                    <ion-row>
+                      <ion-badge class="{{hazard.action}}">{{hazard.action}}</ion-badge>
+                    </ion-row>
+                    <ion-row class="hazardLine">
+                      <p>{{hazard.risk}}</p>
+                    </ion-row>
+                    <ion-row>
+                      <ul>
+                        <li *ngFor="let control of hazard.controls">
+                          {{control}}
+                        </li>
+                      </ul>
+                    </ion-row>
+                    <ion-row>
+                      <!-- these are ugly i know leave me alone -->
+                      <ion-button color="light" (click)="deleteHazard($event, hazard)">
+                        <ion-icon name="trash-outline"></ion-icon>
+                      </ion-button>
+                      <ion-button color="light" (click)="editHazard($event, hazard)">
+                        <ion-icon name="create-outline"></ion-icon>
+                      </ion-button>
+                    </ion-row>
+                  </ion-card-content>
+                </ion-card>
+              </ion-label>
+            </ion-item>
+
+            <ion-item-options side="end" (ionSwipe)="no($event.target.parentElement, hazard)">
+              <ion-item-option color="danger" (click)="no($event.target.parentElement.parentElement, hazard)">
+                No
+              </ion-item-option>
+            </ion-item-options>
+          </ion-item-sliding>
+        </ng-container>
+
+        <ion-item class="addNewHazard">
+          <ion-label class="ion-text-wrap ion-no-margin">
+            <ion-card button (click)="addNewHazard()">
+              <ion-card-header>
+                <ion-row>
+                  <ion-col class="ion-no-padding" size="11">
+                    <ion-card-title>Add a new hazard</ion-card-title>
+                  </ion-col>
+                  <ion-col class="ion-no-padding iconCol" size="1">
+                    <ion-icon name="add-circle" color="secondary" size="large"></ion-icon>
+                  </ion-col>
+                </ion-row>
+              </ion-card-header>
+            </ion-card>
+          </ion-label>
+        </ion-item>
+
+        <ion-item>
+          <ion-card class="signature-card">
+            <ion-card-header>
+              <ion-card-title class="title">Please sign below</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <canvas id="signature-pad" class="signature-pad" width=1000 height=200></canvas>
+              <ion-row>
+                <ion-col class="ion-text-center">
+                  <ion-button class="signatureButton" size="medium" (click)="confirm()">Confirm</ion-button>
+                </ion-col>
+                <ion-col class="ion-text-center">
+                  <ion-button class="signatureButton" size="medium" (click)="clear()">Clear</ion-button>
+                </ion-col>
+              </ion-row>
+            </ion-card-content>
+          </ion-card>
+        </ion-item>
+      </ion-list>
+    </ion-col>
+  </ion-row>
+</ion-content>

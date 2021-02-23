@@ -1,3 +1,5 @@
+import { Job } from './job';
+import { Transceiver } from './transceiver';
 import { Vat } from './vat';
 
 export interface Product {
@@ -28,7 +30,9 @@ export interface Product {
     supplierDisplay?: string;
     supplierNumber?: string;
     transceiverId?: number;
+    transceivers?: Transceiver[];
     type?: string;
     updatedAt?: string;
     vats?: Array<Vat>;
+    job?: Job;
 }

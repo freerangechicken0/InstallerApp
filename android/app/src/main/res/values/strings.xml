@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">installer-ui-ionic</string>
-    <string name="title_activity_main">installer-ui-ionic</string>
-    <string name="package_name">io.ionic.starter</string>
-    <string name="custom_url_scheme">io.ionic.starter</string>
+    <string name="app_name">Levno Installer</string>
+    <string name="title_activity_main">Levno Installer</string>
+    <string name="package_name">com.app.levno.installer</string>
+    <string name="custom_url_scheme">com.app.levno.installer</string>
 </resources>
