@@ -2,7 +2,6 @@ import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { Components } from '@ionic/core';
 import { Subscription } from 'rxjs';
 import { Transceiver } from 'src/app/core/_models/transceiver';
-import { MixpanelService } from 'src/app/core/_services/mixpanel.service';
 import { ToastService } from 'src/app/core/_services/toast.service';
 import { TransceiverService } from 'src/app/core/_services/transceiver.service';
 
@@ -32,12 +31,10 @@ export class InfoModalComponent implements OnInit {
   constructor(
     public transceiverService: TransceiverService,
     public toastService: ToastService,
-    private mixpanelService: MixpanelService
   ) {
   }
 
   ngOnInit() {
-    this.mixpanelService.trackEvent("Opened info screen for Transceiver: " + this.transceiver.serialNumber);
     this.getTransceiverData();
     this.getTransceiverCheckins();
     this.lastUpdated = Date.now();
@@ -100,7 +97,6 @@ export class InfoModalComponent implements OnInit {
 
   doRefresh(event) {
     this.count = 10;
-    this.mixpanelService.trackEvent("Refreshed Transceiver info");
     this.getTransceiverData();
     this.getTransceiverCheckins();
 
@@ -113,7 +109,6 @@ export class InfoModalComponent implements OnInit {
   doInfinite(event) {
     if (this.count < this.data.length) {
       this.count = this.count + 10;
-      this.mixpanelService.trackEvent("Loaded " + this.count + " transceiver data entries");
       this.loadedData = this.data.slice(0, this.count);
     }
     event?.target.complete();
@@ -156,18 +151,6 @@ export class InfoModalComponent implements OnInit {
         return null;
       }
     }
-  }
-
-  rebootTransceiver() {
-    this.transceiverService.rebootTransceiver(this.transceiver.id).subscribe(data => {
-      if (data.data) {
-        this.mixpanelService.trackEvent("Rebooted Transceiver: " + this.transceiver.serialNumber);
-        this.toastService.successToast("Reboot message has been sent");
-      }
-      else {
-        this.toastService.errorToast("Transceiver reboot failed");
-      }
-    });
   }
 
   onClose() {

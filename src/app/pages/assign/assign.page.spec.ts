@@ -5,7 +5,6 @@ import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 import { ModalController, Platform, PopoverController } from '@ionic/angular';
 import { DateFnsModule } from 'ngx-date-fns';
 import { of } from 'rxjs';
-import { ProductService } from 'src/app/core/_services/product.service';
 import { ToastService } from 'src/app/core/_services/toast.service';
 import { TransceiverService } from 'src/app/core/_services/transceiver.service';
 import { ManualEntryComponent } from 'src/app/shared/manual-entry/manual-entry.component';
@@ -22,7 +21,6 @@ describe('AssignPage', () => {
   let barcodeScanner;
   let transceiverService;
   let modalController;
-  let productService;
   let toastService;
   let platform;
 
@@ -33,7 +31,6 @@ describe('AssignPage', () => {
     popoverController.create.and.returnValue(popover);
     barcodeScanner = jasmine.createSpyObj('BarcodeScanner', ['scan']);
     transceiverService = jasmine.createSpyObj('TransceiverService', ['getTransceiver']);
-    productService = jasmine.createSpyObj('ProductService', ['assignSensorsToProduct']);
     toastService = jasmine.createSpyObj('ToastService', ['createToast', 'successToast', 'errorToast']);
     modalController = jasmine.createSpyObj('ModalController', ['create']);
     platform = jasmine.createSpyObj('Platform', ['is']);
@@ -56,10 +53,6 @@ describe('AssignPage', () => {
         {
           provide: TransceiverService,
           useValue: transceiverService
-        },
-        {
-          provide: ProductService,
-          useValue: productService
         },
         {
           provide: ToastService,
@@ -321,116 +314,7 @@ describe('AssignPage', () => {
     expect(component.validate().valueOf()).toEqual(true);
   });
 
-  it('createVatSensors creates data to submit', () => {
-    component.selectedProduct = { vats: [{ id: 1 }, { id: 5 }] };
-    component.selectedTransceivers = [
-      {
-        id: 2, sensors: [
-          { id: 3, type: "somevalidtype1", vatId: 1 },
-          { id: 4, type: "somevalidtype2", vatId: 1 }]
-      },
-      {
-        id: 6, sensors: [
-          { id: 7, type: "somevalidtype1", vatId: 5 },
-          { id: 8, type: "somevalidtype2", vatId: 5 },
-          { id: 9, type: "somevalidtype3", vatId: 5 },
-          { id: 10, type: "somevalidtype4", vatId: 5 }]
-      }
-    ];
-    const vatSensors = component.createVatSensors();
-    expect(vatSensors).toEqual([
-      { sensorId: 3, sensorType: "somevalidtype1", vatId: 1, transceiverId: 2 },
-      { sensorId: 4, sensorType: "somevalidtype2", vatId: 1, transceiverId: 2 },
-      { sensorId: 7, sensorType: "somevalidtype1", vatId: 5, transceiverId: 6 },
-      { sensorId: 8, sensorType: "somevalidtype2", vatId: 5, transceiverId: 6 },
-      { sensorId: 9, sensorType: "somevalidtype3", vatId: 5, transceiverId: 6 },
-      { sensorId: 10, sensorType: "somevalidtype4", vatId: 5, transceiverId: 6 }
-    ]);
-  });
-
-  it('createVatSensors doesnt duplicate when same transceiver is on multiple vats', () => {
-    component.selectedProduct = { vats: [{ id: 1 }, { id: 5 }] };
-    component.selectedTransceivers = [
-      {
-        id: 6, sensors: [
-          { id: 7, type: "somevalidtype1", vatId: 1 },
-          { id: 8, type: "somevalidtype2", vatId: 1 },
-          { id: 9, type: "somevalidtype3", vatId: 5 },
-          { id: 10, type: "somevalidtype4", vatId: 5 }]
-      },
-      {
-        id: 6, sensors: [
-          { id: 7, type: "somevalidtype1", vatId: 1 },
-          { id: 8, type: "somevalidtype2", vatId: 1 },
-          { id: 9, type: "somevalidtype3", vatId: 5 },
-          { id: 10, type: "somevalidtype4", vatId: 5 }]
-      }
-    ];
-    const vatSensors = component.createVatSensors();
-    expect(vatSensors).toEqual([
-      { sensorId: 7, sensorType: "somevalidtype1", vatId: 1, transceiverId: 6 },
-      { sensorId: 8, sensorType: "somevalidtype2", vatId: 1, transceiverId: 6 },
-      { sensorId: 9, sensorType: "somevalidtype3", vatId: 5, transceiverId: 6 },
-      { sensorId: 10, sensorType: "somevalidtype4", vatId: 5, transceiverId: 6 },
-    ]);
-  });
-
-  it('createVatSensors ignores when a vat has no transceiver', () => {
-    component.selectedProduct = { vats: [{ id: 1 }, { id: 5 }] };
-    component.selectedTransceivers = [
-      {
-        id: 2, sensors: [
-          { id: 3, type: "somevalidtype1", vatId: 1 },
-          { id: 4, type: "somevalidtype2", vatId: 1 }]
-      },
-      null
-    ];
-    const vatSensors = component.createVatSensors();
-    expect(vatSensors).toEqual([
-      { sensorId: 3, sensorType: "somevalidtype1", vatId: 1, transceiverId: 2 },
-      { sensorId: 4, sensorType: "somevalidtype2", vatId: 1, transceiverId: 2 }
-    ]);
-  });
-
-  it('submit sends correct data', () => {
-    component.selectedProduct = {
-      id: 123,
-      vats: [
-        { id: 1, formula: "somevalidformula", sizeString: "somevalidsizestring" },
-        { id: 5, formula: "somevalidformula", sizeString: "somevalidsizestring" }
-      ]
-    };
-    component.selectedTransceivers = [
-      {
-        id: 2,
-        sensors: [
-          { id: 3, type: "somevalidtype1", vatId: 1 },
-          { id: 4, type: "somevalidtype2", vatId: 1 }
-        ]
-      },
-      {
-        id: 6,
-        sensors: [
-          { id: 7, type: "somevalidtype1", vatId: 5 },
-          { id: 8, type: "somevalidtype2", vatId: 5 },
-          { id: 9, type: "somevalidtype3", vatId: 5 },
-          { id: 10, type: "somevalidtype4", vatId: 5 }
-        ]
-      }
-    ];
-    const transceivers = [{ id: 2 }, { id: 6 }];
-    const vatSensors = component.createVatSensors();
-    const vats = [
-      { vatId: 1, vatType: "somevalidformula", vatSize: "somevalidsizestring", transceiverId: 2 },
-      { vatId: 5, vatType: "somevalidformula", vatSize: "somevalidsizestring", transceiverId: 6 }
-    ];
-
-    productService.assignSensorsToProduct.and.returnValue(of({}));
-    component.submit();
-    expect(productService.assignSensorsToProduct).toHaveBeenCalledWith(123, { transceivers, vatSensors, vats });
-    expect(toastService.successToast).toHaveBeenCalledWith("Sensors have been assigned");
-  });
-
+  
   it('submit doesnt send incorrect data', () => {
     component.selectedProduct = null;
     component.submit();

@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthenticationService } from '../../core/_services/authentication.service';
 import { MenuController } from '@ionic/angular';
-import { MixpanelService } from 'src/app/core/_services/mixpanel.service';
 
 @Component({
     selector: 'app-login',
@@ -27,9 +25,7 @@ export class LoginPage implements OnInit {
         private formBuilder: FormBuilder,
         private route: ActivatedRoute,
         private router: Router,
-        private authenticationService: AuthenticationService,
         private menuController: MenuController,
-        private mixpanelService: MixpanelService
     ) {
     }
 
@@ -72,20 +68,6 @@ export class LoginPage implements OnInit {
             return;
         }
 
-        this.loading = true;
-        this.authenticationService.login(this.f.email.value, this.f.password.value)
-            .subscribe((loginResponse) => {
-                // terms guard will redirect to terms acceptance if needed
-                // this.loading = false;
-                // this.error = null;
-                // this.router.navigateByUrl(this.returnUrl);
-                this.error = null;
-                this.loading = false;
-                this.mixpanelService.trackEvent("Logged in");
-                this.router.navigate(['/home']);
-            }, error => {
-                this.error = error.error.error;
-                this.loading = false;
-            });
+        this.router.navigate(['/home']);
     }
 }

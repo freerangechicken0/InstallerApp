@@ -8,8 +8,6 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AppComponent } from './app.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { MixpanelService } from './core/_services/mixpanel.service';
-import { AuthenticationService } from './core/_services/authentication.service';
 import { Router } from '@angular/router';
 
 describe('AppComponent', () => {
@@ -17,18 +15,13 @@ describe('AppComponent', () => {
   let statusBarSpy;
   let splashScreenSpy;
   let platformSpy;
-  let mixpanelService;
   let menuController;
-  let authenticationService;
 
   beforeEach(async(() => {
     statusBarSpy = jasmine.createSpyObj('StatusBar', ['styleDefault']);
     splashScreenSpy = jasmine.createSpyObj('SplashScreen', ['hide']);
     platformSpy = jasmine.createSpyObj('Platform', { ready: Promise.resolve(), is: true });
-    mixpanelService = jasmine.createSpyObj('MixpanelService', ['initialiseMixpanel', 'trackEvent']);
-    mixpanelService.initialiseMixpanel.and.returnValue(Promise.resolve(true));
     menuController = jasmine.createSpyObj('MenuController', ['enable']);
-    authenticationService = jasmine.createSpyObj('AuthenticationService', ['logout']);
     TestBed.configureTestingModule({
       declarations: [AppComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -41,16 +34,8 @@ describe('AppComponent', () => {
         { provide: SplashScreen, useValue: splashScreenSpy },
         { provide: Platform, useValue: platformSpy },
         {
-          provide: MixpanelService,
-          useValue: mixpanelService
-        },
-        {
           provide: MenuController,
           useValue: menuController
-        },
-        {
-          provide: AuthenticationService,
-          useValue: authenticationService
         }
       ],
     }).compileComponents();
@@ -69,7 +54,6 @@ describe('AppComponent', () => {
     expect(statusBarSpy.styleDefault).toHaveBeenCalled();
     expect(splashScreenSpy.hide).toHaveBeenCalled();
     expect(menuController.enable).toHaveBeenCalledWith(true);
-    expect(mixpanelService.initialiseMixpanel).toHaveBeenCalled();
   }));
 
   it('logout logs out', () => {
@@ -77,7 +61,6 @@ describe('AppComponent', () => {
     const app = fixture.debugElement.componentInstance;
     const routerSpy = spyOn(TestBed.inject(Router), 'navigate');
     app.logout();
-    expect(authenticationService.logout).toHaveBeenCalled();
     expect(routerSpy).toHaveBeenCalledWith(['/login']);
     
   });

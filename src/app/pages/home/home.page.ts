@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { MenuController } from '@ionic/angular';
 import { Product } from 'src/app/core/_models/product';
-import { MixpanelService } from 'src/app/core/_services/mixpanel.service';
 
 @Component({
   selector: 'app-home',
@@ -15,7 +14,6 @@ export class HomePage implements OnInit {
   constructor(
     private router: Router,
     private menuController: MenuController,
-    private mixpanelService: MixpanelService
   ) { }
 
   ionViewWillEnter() {
@@ -23,7 +21,6 @@ export class HomePage implements OnInit {
   }
 
   ngOnInit() {
-    this.mixpanelService.trackEvent("Opened home page");
   }
 
   goToMilk(product: Product) {

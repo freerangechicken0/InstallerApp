@@ -1,7 +1,6 @@
 import { OnInit, ChangeDetectorRef, Component, ElementRef, Input, QueryList, ViewChild, ViewChildren, EventEmitter, Output } from '@angular/core';
 import { Gesture, GestureController, GestureDetail, Platform, PopoverController } from '@ionic/angular';
 import { Vat } from 'src/app/core/_models/vat';
-import { MixpanelService } from 'src/app/core/_services/mixpanel.service';
 import { ToastService } from 'src/app/core/_services/toast.service';
 import { SensorSelectComponent } from '../sensor-select/sensor-select.component';
 import { Sensor } from '../../core/_models/sensor';
@@ -42,7 +41,6 @@ export class SensorsComponent implements OnInit {
   constructor(
     private popoverController: PopoverController,
     private toastService: ToastService,
-    private mixpanelService: MixpanelService,
     private gestureController: GestureController,
     private changeDirectorRef: ChangeDetectorRef,
     private platform: Platform
@@ -310,7 +308,6 @@ export class SensorsComponent implements OnInit {
       popover.onDidDismiss()
         .then((data) => {
           if (data.data !== undefined) {
-            this.mixpanelService.trackEvent("Assigned Sensor: " + sen.serialNumber + " as " + data.data + " on Transceiver: " + this.transceiverSerialNumber + " on VatId: " + this.vat.id);
             if (sen.type) {
               this.removeSensor(sen.type);
             }
@@ -362,7 +359,6 @@ export class SensorsComponent implements OnInit {
   }
 
   public deleteQrSensor(serialNumber): void {
-    this.mixpanelService.trackEvent("Deleted Sensor: " + serialNumber);
     this.qrSensors.splice(this.qrSensors.findIndex(sen => sen.serialNumber === serialNumber), 1);
   }
 

@@ -5,7 +5,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 
 import { LoginPage } from './login.page';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { AuthenticationService } from 'src/app/core/_services/authentication.service';
 import { of, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
@@ -13,11 +12,9 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 describe('LoginPage', () => {
   let component: LoginPage;
   let fixture: ComponentFixture<LoginPage>;
-  let authenticationService;
   let menuController;
 
   beforeEach(async(() => {
-    authenticationService = jasmine.createSpyObj('AuthenticationService', ['login']);
     menuController = jasmine.createSpyObj('MenuController', ['enable']);
     TestBed.configureTestingModule({
       declarations: [LoginPage],
@@ -29,10 +26,6 @@ describe('LoginPage', () => {
         HttpClientTestingModule
       ],
       providers: [
-        {
-          provide: AuthenticationService,
-          useValue: authenticationService
-        },
         {
           provide: MenuController,
           useValue: menuController
@@ -53,7 +46,6 @@ describe('LoginPage', () => {
     const routerSpy = spyOn(TestBed.inject(Router), 'navigate');
     component.loginForm.controls.email.patchValue('somevalid@email.com');
     component.loginForm.controls.password.patchValue('somevalidpassword');
-    authenticationService.login.and.returnValue(of({}));
     component.onSubmit({ srcElement: [{ value: 'somevalid@email.com' }, { value: 'somevalidpassword' }] });
     expect(routerSpy).toHaveBeenCalledWith(['/home']);
   });
@@ -84,14 +76,6 @@ describe('LoginPage', () => {
     component.loginForm.controls.password.patchValue('somevalidpassword');
     component.onSubmit({ srcElement: [{ value: 'someinvalidemail' }, { value: 'somevalidpassword' }] });
     expect(component.error).toEqual('Invalid email address');
-  });
-
-  it('displays error from api: invalid credentials', () => {
-    component.loginForm.controls.email.patchValue('somevalid@email.com');
-    component.loginForm.controls.password.patchValue('somevalidpassword');
-    authenticationService.login.and.returnValue(throwError({ error: { "status": "error", "error": "Invalid Credentials." } }));
-    component.onSubmit({ srcElement: [{ value: 'somevalid@email.com' }, { value: 'somevalidpassword' }] });
-    expect(component.error).toEqual('Invalid Credentials.');
   });
 
   it('disable side menu', () => {

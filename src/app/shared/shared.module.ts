@@ -16,7 +16,6 @@ import { TempCheckComponent } from './temp-check/temp-check.component';
 import { VatSerialNumberComponent } from './vat-serial-number/vat-serial-number.component';
 import { SensorsComponent } from './sensors/sensors.component';
 import { PhotosModalComponent } from './photos-modal/photos-modal.component';
-import { JobSelectComponent } from './select-button/search-modal/job-select/job-select.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +32,6 @@ import { JobSelectComponent } from './select-button/search-modal/job-select/job-
     VatSerialNumberComponent,
     SensorsComponent,
     PhotosModalComponent,
-    JobSelectComponent,
     TimeAgoPipe
   ],
   imports: [
@@ -58,7 +56,6 @@ import { JobSelectComponent } from './select-button/search-modal/job-select/job-
     VatSerialNumberComponent,
     SensorsComponent,
     PhotosModalComponent,
-    JobSelectComponent,
     DateFnsModule
   ]
 })

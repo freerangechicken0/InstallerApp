@@ -9,9 +9,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared/shared.module';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { JwtInterceptor } from './core/_helpers/jwt.interceptor';
-import { AuthenticationService } from './core/_services/authentication.service';
+import { HttpClientModule } from '@angular/common/http';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 import { CameraPreview } from '@ionic-native/camera-preview/ngx';
 
@@ -31,8 +29,7 @@ import { CameraPreview } from '@ionic-native/camera-preview/ngx';
     SplashScreen,
     BarcodeScanner,
     CameraPreview,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true, deps: [AuthenticationService]}
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
 })

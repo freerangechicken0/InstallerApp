@@ -11,14 +11,12 @@ import { ToastService } from 'src/app/core/_services/toast.service';
 import { SensorsComponent } from '../../shared/sensors/sensors.component';
 import { ManualEntryComponent } from 'src/app/shared/manual-entry/manual-entry.component';
 import { SelectButtonComponent } from 'src/app/shared/select-button/select-button.component';
-import { MixpanelService } from 'src/app/core/_services/mixpanel.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HealthAndSafetyModalComponent } from 'src/app/shared/health-and-safety-modal/health-and-safety-modal.component';
 import { TempCheckComponent } from 'src/app/shared/temp-check/temp-check.component';
 import { VatSerialNumberComponent } from 'src/app/shared/vat-serial-number/vat-serial-number.component';
 import { PhotosModalComponent } from 'src/app/shared/photos-modal/photos-modal.component';
 import { PhotoService } from 'src/app/core/_services/photo.service';
-import { SimproService } from 'src/app/core/_services/simpro.service';
 import { TempCheck } from 'src/app/core/_models/tempCheck';
 import { HealthAndSafety } from 'src/app/core/_models/healthAndSafety';
 
@@ -128,12 +126,10 @@ export class AssignPage implements OnInit {
     public popoverController: PopoverController,
     private modalController: ModalController,
     private barcodeScanner: BarcodeScanner,
-    private mixpanelService: MixpanelService,
     private platform: Platform,
     private route: ActivatedRoute,
     private router: Router,
     private photoService: PhotoService,
-    private simproService: SimproService
   ) {
     this.route.queryParams.subscribe((params) => {
       const state = this.router.getCurrentNavigation().extras.state;
@@ -145,7 +141,6 @@ export class AssignPage implements OnInit {
 
   ngOnInit() {
     this.lastUpdated = Date.now();
-    this.mixpanelService.trackEvent("Opened milk install page");
   }
 
   public setVats(): void {
@@ -163,7 +158,6 @@ export class AssignPage implements OnInit {
   }
 
   public productSelected(product: Product): void {
-    this.mixpanelService.trackEvent("Selected product: " + product.supplierNumber);
     this.selectedProduct = product;
     this.photoService.clearPhotos();
     this.healthAndSafetyData = null;
@@ -181,10 +175,8 @@ export class AssignPage implements OnInit {
         if (vat && vat.transceiverId !== null) {
           const transceiver = this.selectedProduct.transceivers.find(tran => tran.id === vat.transceiverId);
           this.selectedTransceivers[index] = transceiver;
-          this.mixpanelService.trackEvent("Transceiver: " + transceiver.serialNumber + " already on Vat " + (index + 1));
         }
         else {
-          this.mixpanelService.trackEvent("No transceiver already on Vat " + (index + 1));
           if (this.selectedTransceivers.length > 1) {
             this.selectedTransceivers[index] = null;
           }
@@ -197,7 +189,6 @@ export class AssignPage implements OnInit {
   }
 
   public transceiverSelected(index: number, transceiver: Transceiver): void {
-    this.mixpanelService.trackEvent("Selected Transceiver: " + transceiver.serialNumber + " on Vat " + (index + 1));
     const tran = this.selectedTransceivers.find(tran => tran?.id === transceiver.id);
     if (tran) {
       this.selectedTransceivers[index] = tran;
@@ -210,26 +201,22 @@ export class AssignPage implements OnInit {
   public goForward(): void {
     const nextIndex = this.currentVatIndex + 1 > this.nVats - 1 ? 0 : this.currentVatIndex + 1;
     this.currentVatIndex = nextIndex;
-    this.mixpanelService.trackEvent("Viewed Vat " + (this.currentVatIndex + 1));
     this.setVats();
   }
 
   public goBack(): void {
     const nextIndex = this.currentVatIndex - 1 < 0 ? this.nVats - 1 : this.currentVatIndex - 1;
     this.currentVatIndex = nextIndex;
-    this.mixpanelService.trackEvent("Viewed Vat " + (this.currentVatIndex + 1));
     this.setVats();
   }
 
   public vatTypeSelected(event): void {
     this.vat.formula = event.detail.value;
-    this.mixpanelService.trackEvent("Selected Vat " + (this.currentVatIndex + 1) + " type: " + event.detail.value);
     // this.vat.sizeString = null; wipes size when changing vat
   }
 
   public vatSizeSelected(event): void {
     this.vat.sizeString = event.detail.value;
-    this.mixpanelService.trackEvent("Selected Vat " + (this.currentVatIndex + 1) + " size: " + event.detail.value);
   }
 
   public fabClicked(): void {
@@ -310,53 +297,19 @@ export class AssignPage implements OnInit {
     return bool;
   }
 
-  public createVatSensors(): any {
-    let vatSensors = [];
-    this.selectedProduct.vats.forEach((vat, index) => {
-      if (this.selectedTransceivers[index]) {
-        this.selectedTransceivers[index].sensors.forEach((sensor) => {
-          if (!sensor.type || sensor.vatId === vat.id) {
-            vatSensors.push({ sensorId: sensor.id, sensorType: sensor.type, vatId: sensor.vatId, transceiverId: this.selectedTransceivers[index].id });
-          }
-        });
-      }
-    });
-    return vatSensors;
-  }
-
   public submit(): void {
     if (this.validate()) {
-      this.mixpanelService.trackEvent("Submitted assigned sensors on Product: " + this.selectedProduct.supplierNumber);
-      const transceiverIds = [...new Set(this.selectedTransceivers.map((tran) => {
-        if (tran) {
-          return tran.id
-        }
-      }))];
-      const product = {
-        transceivers: transceiverIds.map((tranId) => ({ id: tranId })),
-        vatSensors: this.createVatSensors(),
-        vats: this.selectedProduct.vats.map((vat, index) => ({ vatId: vat.id, vatType: vat.formula, vatSize: vat.sizeString, transceiverId: this.selectedTransceivers[index]?.id }))
-      };
-      this.productService.assignSensorsToProduct(this.selectedProduct.id, product).subscribe((product) => {
-        if (product?.data) {
-          this.simproService.submitNote(this.selectedProduct.job, this.healthAndSafetyData, this.selectedProduct.vats, this.preTempChecks, this.postTempChecks, this.vatSerialNumbers).subscribe((data) => {
-            if (data?.data) {
-              if (this.photoService.getNoPhotos()) {
-                this.toastService.successToast("Sensors have been assigned");
-                this.router.navigate(['/home']);
-              }
-              else {
-                this.photoService.submitPhotos();
-                this.toastService.createToast("Uploading...");
-                setTimeout(() => {
-                  this.toastService.successToast("Sensors have been assigned");
-                  this.router.navigate(['/home']);
-                }, 5000);
-              }
-            }
-          });
-        }
-      });
+      if (this.photoService.getNoPhotos()) {
+        this.toastService.successToast("Sensors have been assigned");
+        this.router.navigate(['/home']);
+      }
+      else {
+        this.toastService.createToast("Uploading...");
+        setTimeout(() => {
+          this.toastService.successToast("Sensors have been assigned");
+          this.router.navigate(['/home']);
+        }, 5000);
+      }
     }
   }
 
@@ -375,7 +328,6 @@ export class AssignPage implements OnInit {
         });
       }
       if (sensorsToRemove.length) {
-        this.mixpanelService.trackEvent("Merged " + sensorsToRemove.length + " scanned sensors");
         for (let sensor of sensorsToRemove) {
           this.qrSensors.splice(this.qrSensors.indexOf(sensor), 1);
         }
@@ -398,7 +350,6 @@ export class AssignPage implements OnInit {
       this.toastService.createToast("" + serialNumber + " is already on the transceiver");
     }
     else {
-      this.mixpanelService.trackEvent("Added sensor: " + serialNumber + " onto Transceiver: " + this.selectedTransceivers[this.currentVatIndex].serialNumber + " on Vat: " + (this.currentVatIndex + 1));
       let sensor = { serialNumber: serialNumber, type: null, vatId: null };
       this.qrSensors.push(sensor);
       this.sensorsChild.showSensorSelect(sensor);
@@ -497,7 +448,6 @@ export class AssignPage implements OnInit {
     popover.onDidDismiss()
       .then((data) => {
         if (data.data) {
-          this.mixpanelService.trackEvent("Manually added sensor");
           this.addScannedSensor(data.data);
         }
       });
@@ -508,7 +458,6 @@ export class AssignPage implements OnInit {
     if (this.platform.is('cordova')) {
       this.barcodeScanner.scan().then(barcodeData => {
         if (barcodeData.text) {
-          this.mixpanelService.trackEvent("Scanned sensor with qr code");
           this.addScannedSensor(barcodeData.text);
         }
         else {
@@ -537,15 +486,13 @@ export class AssignPage implements OnInit {
   }
 
   public doRefresh(event): void {
-    this.mixpanelService.trackEvent("Refreshed Transceivers");
     [...new Set(this.selectedTransceivers.map((tran) => tran?.id))].forEach((tranId) => {
       if (tranId) {
-        this.transceiverService.getTransceiver(tranId).subscribe((newTran) => {
-          this.selectedTransceivers.forEach((oldTran, index) => {
-            if (oldTran?.id === newTran.id) {
-              this.selectedTransceivers[index] = newTran;
-            }
-          });
+        const newTran = this.transceiverService.getTransceiver(tranId);
+        this.selectedTransceivers.forEach((oldTran, index) => {
+          if (oldTran?.id === newTran.id) {
+            this.selectedTransceivers[index] = newTran;
+          }
         });
       }
     });
